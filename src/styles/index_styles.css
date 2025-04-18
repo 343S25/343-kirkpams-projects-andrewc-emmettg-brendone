@@ -194,3 +194,63 @@ button:hover {
   border: 1px solid #ccc;
   margin-top: 20px;
 }
+
+/*                                             *\
+/*                                             *\
+/*  Awesome smaller screen size layouts below  *\
+/*                                             *\
+/*                                             */
+
+
+@media only screen and (max-width: 900px) {
+  .sidebar {
+    background-color: #2c3e50;
+    color: white;
+    padding: 20px;
+    height: 50px;
+    width: 100vw;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    bottom: 0px;
+    position: absolute;
+  }
+  
+  .nav-list {
+    list-style: none;
+    padding-left: 0;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    display: none;
+    position: absolute;
+    bottom: 100%;
+  }
+
+  .sidebar:hover .nav-list{
+    display: block;
+    
+  }
+  
+  .nav-list li {
+    width: 100%;
+  }
+  
+  .nav-list button {
+    width: 100%;
+    padding: 12px 0;
+    background-color: #34495e;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1em;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.2s ease;
+    
+  }
+  
+  .nav-list button:hover {
+    background-color: #3d5a73;
+  }
+}
