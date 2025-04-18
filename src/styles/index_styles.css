@@ -85,6 +85,10 @@ body, html {
   background-color: #ecf0f1;
 }
 
+#display-title {
+  margin-bottom: 10px; /* Adjust the value as needed */
+}
+
 /* Chart area inside the main content */
 #chart {
   width: 100%;
@@ -158,9 +162,10 @@ form {
   padding: 6px;
 }
 
-select {
+select, input[type="date"] {
   padding: 8px;
   font-size: 1em;
+  font-family: Arial, sans-serif;
   width: 100%;
   max-width: 200px;
   margin-top: 5px;

@@ -38,6 +38,7 @@ window.onclick = function(event) {
     }
 }
 
+// Show the hidden graph dropdown if needed
 const dataSelect = document.getElementById('graph-data-select');
 const typeSelectGroup = document.getElementById('graph-type-select-group');
 dataSelect.addEventListener('change', () => {
@@ -48,6 +49,7 @@ dataSelect.addEventListener('change', () => {
     }
 });
 
+// Show the hidden data dropdown if needed
 const ddataSelect = document.getElementById('data-data-select');
 const dtypeSelectGroup = document.getElementById('data-type-select-group');
 ddataSelect.addEventListener('change', () => {
@@ -58,12 +60,56 @@ ddataSelect.addEventListener('change', () => {
     }
 });
 
+function setDefaultDateRange(startId, endId, daysBack = 30) {
+    const endDateInput = document.getElementById(endId);
+    const startDateInput = document.getElementById(startId);
+
+    const today = new Date();
+    const priorDate = new Date();
+    priorDate.setDate(today.getDate() - daysBack);
+
+    // Format to YYYY-MM-DD
+    const format = (date) => date.toISOString().split('T')[0];
+
+    endDateInput.value = format(today);
+    startDateInput.value = format(priorDate);
+
+    // Set min/max logic
+    endDateInput.min = format(priorDate);
+    startDateInput.max = format(today);
+}
+
+// Apply to both forms
+setDefaultDateRange('graph-start-date', 'graph-end-date');
+setDefaultDateRange('data-start-date', 'data-end-date');
+
+// Prevent submission if dates invalid
+function syncDatePickers(startInput, endInput) {
+    const start = document.getElementById(startInput);
+    const end = document.getElementById(endInput);
+
+    start.addEventListener('change', () => {
+        end.min = start.value;
+    });
+
+    end.addEventListener('change', () => {
+        start.max = end.value;
+    });
+}
+
+// Apply to both modals
+syncDatePickers('graph-start-date', 'graph-end-date');
+syncDatePickers('data-start-date', 'data-end-date');
+
 function pull_graph_data() {
+    let graph = document.getElementById('graph-type').value;
     let data = document.getElementById('graph-data-select').value; // Get the graph data selection type
     if (data == 'data-type') {
         data = document.getElementById('graph-entry-type').value; // Sets the actual graph data type 
     }
-    return [document.getElementById('graph-type').value, data]
+    let start_date = document.getElementById('graph-start-date').value;
+    let end_date = document.getElementById('graph-end-date').value;
+    return [graph, data, start_date, end_date]
 }
 
 function pull_data_data() {
@@ -71,27 +117,50 @@ function pull_data_data() {
     if (data == 'data-type') {
         data = document.getElementById('data-entry-type').value;
     }
-    return data;
+    let start_date = document.getElementById('graph-start-date').value;
+    let end_date = document.getElementById('graph-end-date').value;
+    return [data, start_date, end_date]
 }
 
 // Load graph into preview display
 document.getElementById('btn-graph-preview').addEventListener('click', () => {
+    const start = document.getElementById('graph-start-date').value;
+    const end = document.getElementById('graph-end-date').value;
+    if ((start && end) && (start > end || end < start)) {
+        document.getElementById('graph-preview').textContent = 'Invalid date range: Start date must precede end date.';
+        return;
+    }
     let info = pull_graph_data();
-    document.getElementById('graph-preview').innerHTML = `Will be a Graph of:<br>Graph Type Selected: ${info[0]}<br>Data Type Selected: ${info[1]}`;
+    document.getElementById('graph-preview').innerHTML = `Will be a Graph of:<br>Graph Type Selected: ${info[0]}<br>Data Type Selected: ${info[1]}<br>Over Time From ${info[2]} to ${info[3]}`;
 });
 
 // Load data into preview display
 document.getElementById('btn-data-preview').addEventListener('click', () => {
-    document.getElementById('data-preview').innerHTML = `Will be the Data display of:<br>Data Type Selected: ${pull_data_data()}`;
+    const start = document.getElementById('data-start-date').value;
+    const end = document.getElementById('data-end-date').value;
+    if ((start && end) && (start > end || end < start)) {
+        document.getElementById('data-preview').textContent = 'Invalid date range: Start date must precede end date.';
+        return;
+    }
+    let info = pull_data_data();
+    document.getElementById('data-preview').innerHTML = `Will be the Data display of:<br>Data Type Selected: ${info[0]}<br>Over Time From ${info[1]} to ${info[2]}`;
 });
 
 // Handle form submission (to generate a graph based on selected graph type, data type, and time)
 document.getElementById('graph-form').onsubmit = function(event) {
     event.preventDefault();
+    const start = document.getElementById('graph-start-date').value;
+    const end = document.getElementById('graph-end-date').value;
+    if ((start && end) && (start > end || end < start)) {
+        alert('Invalid date range: Start date must precede end date.');
+        return;
+    }
     const info = pull_graph_data();
     document.getElementById('temp-content').innerHTML = `Will be a Graph of:<br>Graph Type Selected: ${info[0]}<br>Data Type Selected: ${info[1]}`;
     console.log(`Graph Type Selected: ${info[0]}`);
     console.log(`Data Type Selected: ${info[1]}`);
+    console.log(`Start Date: ${info[2]}`);
+    console.log(`End Date: ${info[3]}`);
     // TODO add functionality to dynamically generate a graph
     // Research using Chart.js or another graphing library
     graph_modal.style.display = 'none';
@@ -100,9 +169,16 @@ document.getElementById('graph-form').onsubmit = function(event) {
 // Handle form submission (to generate a table based on selected data type and time)
 document.getElementById('data-form').onsubmit = function(event) {
     event.preventDefault();
+    const start = document.getElementById('data-start-date').value;
+    const end = document.getElementById('data-end-date').value;
+    if ((start && end) && (start > end || end < start)) {
+        alert('Invalid date range: Start date must precede end date.');
+        return;
+    }
     const info = pull_data_data();
     document.getElementById('temp-content').innerHTML = `Will be the Data display of:<br>Data Type Selected: ${info}`;
-    console.log(`Data Type Selected: ${info}`);
+    console.log(`Data Type Selected: ${info[0]}`);
+    console.log(`Start Date: ${info[1]}`);
+    console.log(`End Date: ${info[2]}`);
     data_modal.style.display = 'none';
 }
-

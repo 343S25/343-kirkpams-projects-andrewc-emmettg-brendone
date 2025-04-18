@@ -57,7 +57,7 @@
                     <div class="form-group" id="graph-type-select-group" style="display: none;">
                         <label for="graph-entry-type">Entry Type</label>
                         <select id="graph-entry-type" name="graph-entry-type">
-                            <option value="food">Food Expense</option>
+                            <option value="food" selected>Food Expense</option>
                             <option value="transport">Transport Expense</option>
                             <option value="living">Living Expense</option>
                             <option value="bills">Bills</option>
@@ -67,6 +67,14 @@
                         </select>
                     </div>
                     <!-- TODO div for time selection, make it a good format for a range? double-dropdown? -->
+                    <div class="form-group">
+                        <label for="graph-start-date">Start Date</label>
+                        <input type="date" id="graph-start-date" name="graph-start-date">
+                    </div>
+                    <div class="form-group">
+                        <label for="graph-end-date">End Date</label>
+                        <input type="date" id="graph-end-date" name="graph-end-date">
+                    </div>
                     <div class="form-actions">
                         <button type="button" id="btn-graph-preview">Preview</button>
                         <button type="submit" id="submit-graph-form">Generate Graph</button>
@@ -93,7 +101,7 @@
                     <div class="form-group" id="data-type-select-group" style="display: none;">
                         <label for="data-entry-type">Entry Type</label>
                         <select id="data-entry-type" name="data-entry-type">
-                            <option value="food">Food Expense</option>
+                            <option value="food" selected>Food Expense</option>
                             <option value="transport">Transport Expense</option>
                             <option value="living">Living Expense</option>
                             <option value="bills">Bills</option>
@@ -103,6 +111,14 @@
                         </select>
                     </div>
                     <!-- TODO div for time selection. Implement same as above. -->
+                    <div class="form-group">
+                        <label for="data-start-date">Start Date</label>
+                        <input type="date" id="data-start-date" name="data-start-date">
+                    </div>
+                    <div class="form-group">
+                        <label for="data-end-date">End Date</label>
+                        <input type="date" id="data-end-date" name="data-end-date">
+                    </div>
                     <div class="form-actions">
                         <button type="button" id="btn-data-preview">Preview</button>
                         <button type="submit" id="submit-data-form">Submit Data</button>
