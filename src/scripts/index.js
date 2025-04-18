@@ -69,7 +69,6 @@ ddataSelect.addEventListener('change', () => {
         dtypeSelectGroup.style.display = 'none';
     }
 });
-
 function setDefaultDateRange(startId, endId, daysBack = 30) {
     const endDateInput = document.getElementById(endId);
     const startDateInput = document.getElementById(startId);
@@ -192,3 +191,26 @@ document.getElementById('data-form').onsubmit = function(event) {
     console.log(`End Date: ${info[2]}`);
     data_modal.style.display = 'none';
 }
+///////////////////////////////
+// Show the current GDP Data//
+//////////////////////////////
+const homeData = document.getElementById('homeButton');
+gdpData.addEventListener('click', () => {
+    window.location.href = "/src/gdp.html";
+});
+const gdpData = document.getElementById('gdpButton');
+gdpData.addEventListener('click', () => {
+    window.location.href = "/src/gdp.html";
+});
+const cpiData = document.getElementById('cpiButton');
+gdpData.addEventListener('click', () => {
+    window.location.href = "/src/gdp.html";
+});
+const pceData = document.getElementById('pceButton');
+gdpData.addEventListener('click', () => {
+    window.location.href = "/src/gdp.html";
+});
+const fedData = document.getElementById('fedButton');
+gdpData.addEventListener('click', () => {
+    window.location.href = "/src/gdp.html";
+});
