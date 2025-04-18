@@ -48,6 +48,10 @@ body, html, pre {
   gap: 10px; /* Space between buttons */
 }
 
+.hovertext {
+  display: none;
+}
+
 /* Nav buttons in sidebar */
 .nav-list {
   list-style: none;
@@ -211,9 +215,14 @@ button:hover {
     width: 100vw;
     display: flex;
     flex-direction: row;
-    gap: 10px;
+    gap: 5px;
     bottom: 0px;
     position: absolute;
+  }
+
+  .hovertext {
+    display: inherit;
+    align-items: center;
   }
   
   .nav-list {
@@ -224,28 +233,33 @@ button:hover {
     gap: 10px;
     display: none;
     position: absolute;
-    bottom: 100%;
+    bottom: 60px;
+    left: 70px;
+  }
+
+  .sidebar:hover {
+    height: 100vw;
+  }
+
+  .sidebar:hover .hovertext {
+    display: none;
   }
 
   .sidebar:hover .nav-list{
     display: block;
-    
-  }
-  
-  .nav-list li {
-    width: 100%;
   }
   
   .nav-list button {
-    width: 100%;
-    padding: 12px 0;
-    background-color: #34495e;
+    width: 100vw;
+    padding: 6px 0;
+    padding-left: 40vw;
+    padding-right: 45vw;
+    background-color: #50759b;
     color: white;
     border: none;
     border-radius: 4px;
     font-size: 1em;
     cursor: pointer;
-    text-align: center;
     transition: background-color 0.2s ease;
     
   }
