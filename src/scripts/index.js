@@ -4,6 +4,16 @@
  * Author(s): Andrew Cramer, 
  */
 
+/**
+ *   888888  dP"Yb   I888b.   dP"Yb     - do fetch() somewhere
+ *     I8   dP   Yb  I8  Yb  dP   Yb    - create at least a second HTML page for some capability (could be for add-entry | import | export | settings)
+ *     I8   8     8  I8   8  8     8    - Fill out HTML Project Report Page HTML (MAYBE? need to make accessible from index.html?)
+ *     I8   Yb   dP  I8  dP  Yb   dP    - Include and image somewhere (saved to images file), with alt text
+ *     I8    YbodP   I888P'   YbodP     - Format all paragraphs in a serifed font (titles remain in sans-serif)
+ *                                      - Include link(s) to external site(s) somewhere
+ *                                      - !Significantly less important! Properly format and sort styling in css files
+ */
+
 // Get modal and button
 const graph_modal = document.getElementById('graph-modal');
 const data_modal = document.getElementById('data-modal');
@@ -176,7 +186,7 @@ document.getElementById('data-form').onsubmit = function(event) {
         return;
     }
     const info = pull_data_data();
-    document.getElementById('temp-content').innerHTML = `Will be the Data display of:<br>Data Type Selected: ${info}`;
+    document.getElementById('temp-content').innerHTML = `Will be the Data display of:<br>Data Type Selected: ${info[0]}<br>Over Time From ${info[1]} to ${info[2]}`;
     console.log(`Data Type Selected: ${info[0]}`);
     console.log(`Start Date: ${info[1]}`);
     console.log(`End Date: ${info[2]}`);
