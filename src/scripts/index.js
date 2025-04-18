@@ -195,22 +195,22 @@ document.getElementById('data-form').onsubmit = function(event) {
 // Show the current GDP Data//
 //////////////////////////////
 const homeData = document.getElementById('homeButton');
-gdpData.addEventListener('click', () => {
-    window.location.href = "/src/gdp.html";
+homeData.addEventListener('click', () => {
+    window.location.href = "/src/index.html";
 });
 const gdpData = document.getElementById('gdpButton');
 gdpData.addEventListener('click', () => {
     window.location.href = "/src/gdp.html";
 });
 const cpiData = document.getElementById('cpiButton');
-gdpData.addEventListener('click', () => {
-    window.location.href = "/src/gdp.html";
+cpiData.addEventListener('click', () => {
+    window.location.href = "/src/cpi.html";
 });
 const pceData = document.getElementById('pceButton');
-gdpData.addEventListener('click', () => {
-    window.location.href = "/src/gdp.html";
+pceData.addEventListener('click', () => {
+    window.location.href = "/src/pce.html";
 });
 const fedData = document.getElementById('fedButton');
-gdpData.addEventListener('click', () => {
-    window.location.href = "/src/gdp.html";
+fedData.addEventListener('click', () => {
+    window.location.href = "/src/fed.html";
 });

@@ -16,13 +16,10 @@
         <div class="content-container">
             <div class="sidebar">
                 <ol class="nav-list">
-                    <li><button type="button" id="home">Graph Display</button></li>
+                    <li><button type="button" id="homeButton">Home</button></li>
                     <li><button type="button" id="btn-graph-display">Graph Display</button></li>
                     <li><button type="button" id="btn-data-display">Data Display</button></li>
-                    <li><button type="button" id="btn-add-entry">Add Entry</button></li>
-                    <li><button type="button" id="btn-import">Import</button></li>
                     <li><button type="button" id="btn-export">Export</button></li>
-                    <li><button type="button" id="btn-settings">Settings</button></li>
                     <li><button type="submit" id="gdpButton">Get GDP Data</button></li>
                     <li><button type="submit" id="cpiButton">Get CPI Data </button></li>
                     <li><button type="submit" id="pceButton">Get PCE Data</button></li>
@@ -46,33 +43,6 @@
             <span class="close-btn close-modal" id="close-graph-modal">&times;</span>
             <h2>Graph Display</h2>
             <form id="graph-form">
-                <div class="form-group">
-                    <label for="graph-type">Graph Type</label>
-                    <select id="graph-type" name="graph-type">
-                        <option value="line" selected>Line Chart</option>
-                        <option value="pie">Pie Chart</option>
-                        <option value="bar">Stacked Bar Chart</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="graph-data-select">Select Data</label>
-                    <select id="graph-data-select" name="graph-data-select">
-                        <option value="data-all" selected>All Entries</option>
-                        <option value="data-type">Entries by Type</option>
-                    </select>
-                </div>
-                <div class="form-group" id="graph-type-select-group" style="display: none;">
-                    <label for="graph-entry-type">Entry Type</label>
-                    <select id="graph-entry-type" name="graph-entry-type">
-                        <option value="food" selected>Food Expense</option>
-                        <option value="transport">Transport Expense</option>
-                        <option value="living">Living Expense</option>
-                        <option value="bills">Bills</option>
-                        <option value="entertainment">Entertainment</option>
-                        <option value="income">Income/Revenue</option>
-                        <option value="other">Other</option>
-                    </select>
-                </div>
                 <div class="form-group">
                     <label for="graph-start-date">Start Date</label>
                     <input type="date" id="graph-start-date" name="graph-start-date">
@@ -167,7 +137,7 @@
                 notes: "Purchased 5 days of groceries at FoodLion"
             }
         -->
-    <script src="scripts/index.js"></script>
+    <script src="scripts/pce.js"></script>
 </body>
 
 </html>
