@@ -1,0 +1,22 @@
+/*
+  CSS for report page report.html
+
+  Author(s): Andrew Cramer, 
+*/
+
+body {
+    padding: 2rem;
+    font-family: Georgia, serif;
+}
+
+h1 {
+    font-family: Arial, sans-serif;
+}
+
+ol {
+    margin-top: 1rem;
+}
+
+li {
+    margin-bottom: 1rem;
+}
