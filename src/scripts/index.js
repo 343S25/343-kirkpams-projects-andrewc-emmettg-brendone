@@ -73,6 +73,9 @@ ddataSelect.addEventListener('change', () => {
         dtypeSelectGroup.style.display = 'none';
     }
 });
+
+const formatDate = (date) => date.toISOString().split('T')[0];
+
 function setDefaultDateRange(startId, endId, daysBack = 30) {
     const endDateInput = document.getElementById(endId);
     const startDateInput = document.getElementById(startId);
