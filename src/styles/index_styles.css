@@ -10,7 +10,7 @@
   padding: 0;
 }
 
-body, html {
+body, html, pre {
   height: 100%;
   font-family: Arial, sans-serif;
 }
@@ -46,6 +46,10 @@ body, html {
   display: flex;
   flex-direction: column;
   gap: 10px; /* Space between buttons */
+}
+
+.hovertext {
+  display: none;
 }
 
 /* Nav buttons in sidebar */
@@ -193,4 +197,134 @@ button:hover {
   background-color: #ecf0f1;
   border: 1px solid #ccc;
   margin-top: 20px;
+}
+
+/*                                             *\
+/*                                             *\
+/*  Awesome smaller screen size layouts below  *\
+/*                                             *\
+/*                                             */
+
+
+@media only screen and (max-width: 900px) {
+  .sidebar {
+    background-color: #2c3e50;
+    color: white;
+    padding: 20px;
+    height: 50px;
+    width: 100vw;
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    bottom: 0px;
+    position: absolute;
+  }
+
+  .hovertext {
+    display: inherit;
+    align-items: center;
+  }
+  
+  .nav-list {
+    list-style: none;
+    padding-left: 0;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    display: none;
+    position: absolute;
+    bottom: 60px;
+    left: 70px;
+  }
+
+  .sidebar:hover {
+    height: 100vw;
+  }
+
+  .sidebar:hover .hovertext {
+    display: none;
+  }
+
+  .sidebar:hover .nav-list{
+    display: block;
+  }
+  
+  .nav-list button {
+    width: 100vw;
+    padding: 6px 0;
+    padding-left: 40vw;
+    padding-right: 45vw;
+    background-color: #50759b;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    
+  }
+  
+  .nav-list button:hover {
+    background-color: #3d5a73;
+  }
+  .data-container {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+.data-container h3 {
+    font-size: 1.5em;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.data-item {
+    background-color: #fff;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #eee;
+}
+
+.data-item p {
+    margin: 5px 0;
+}
+
+.no-data {
+    background-color: #ffe6e6;
+    padding: 15px;
+    border: 1px solid #ff9999;
+    border-radius: 8px;
+    color: #d9534f;
+}
+
+.no-data h3 {
+    color: #d9534f;
+    font-size: 1.25em;
+}
+
+.error {
+    background-color: #f2dede;
+    padding: 15px;
+    border: 1px solid #ebccd1;
+    border-radius: 8px;
+    color: #a94442;
+}
+
+.error h3 {
+    color: #a94442;
+    font-size: 1.25em;
+}
+
+#data-preview {
+  max-height: 500px;        
+  overflow-y: auto;        
+  height: auto;             
+  transition: 0.3s ease;
+  
+}
 }

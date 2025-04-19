@@ -4,10 +4,19 @@
  * Author(s): Andrew Cramer, 
  */
 
-// Get modals
+/**
+ *   TODO88  dP"Yb   I888b.   dP"Yb     - do fetch() somewhere
+ *     I8   dP   Yb  I8  Yb  dP   Yb    - create at least a second HTML page for some capability (could be for add-entry | import | export | settings)
+ *     I8   8     8  I8   8  8     8    - Fill out HTML Project Report Page HTML (MAYBE? need to make accessible from index.html?)
+ *     I8   Yb   dP  I8  dP  Yb   dP    - Include and image somewhere (saved to images file), with alt text
+ *     I8    YbodP   I888P'   YbodP     - Format all paragraphs in a serifed font (titles remain in sans-serif)
+ *                                      - Include link(s) to external site(s) somewhere
+ *                                      - !Significantly less important! Properly format and sort styling in css files
+ */
+
+// Get modal and button
 const graph_modal = document.getElementById('graph-modal');
 const data_modal = document.getElementById('data-modal');
-const entry_modal = document.getElementById('entry-modal');
 
 // Show the graph modal when the "Graph Display" button is clicked
 document.getElementById('btn-graph-display').addEventListener('click', () => {
@@ -17,11 +26,6 @@ document.getElementById('btn-graph-display').addEventListener('click', () => {
 // Show the data modal when the "Data Display" button is clicked
 document.getElementById('btn-data-display').addEventListener('click', () => {
     data_modal.style.display = 'block';
-});
-
-// Show the entry modal when the "Add Entry" buton is clicked
-document.getElementById('btn-add-entry').addEventListener('click', () => {
-    entry_modal.style.display = 'block';
 });
 
 // Close the graph modal when the "X" button is clicked
@@ -34,11 +38,6 @@ document.getElementById('close-data-modal').addEventListener('click', () => {
     data_modal.style.display = 'none';
 });
 
-// Close the entry modal when the "X" button is clicked
-document.getElementById('close-entry-modal').addEventListener('click', () => {
-    entry_modal.style.display = 'none';
-});
-
 // Close the graph or data modal if user clicks outside of it
 window.onclick = function(event) {
     if (event.target == graph_modal) {
@@ -47,62 +46,38 @@ window.onclick = function(event) {
     if (event.target == data_modal) {
         data_modal.style.display = 'none';
     }
-    if (event.target == entry_modal) {
-        entry_modal.style.display = 'none';
-    }
 }
 
 // Show the hidden graph dropdown if needed
 const dataSelect = document.getElementById('graph-data-select');
 const typeSelectGroup = document.getElementById('graph-type-select-group');
-dataSelect.addEventListener('change', () => {
-    if (dataSelect.value == 'data-type') {
-        typeSelectGroup.style.display = 'flex';
-    } else {
-        typeSelectGroup.style.display = 'none';
-    }
-});
+
 
 // Show the hidden data dropdown if needed
 const ddataSelect = document.getElementById('data-data-select');
 const dtypeSelectGroup = document.getElementById('data-type-select-group');
-ddataSelect.addEventListener('change', () => {
-    if (ddataSelect.value == 'data-type') {
-        dtypeSelectGroup.style.display = 'flex';
-    } else {
-        dtypeSelectGroup.style.display = 'none';
-    }
-});
 function setDefaultDateRange(startId, endId, daysBack = 30) {
     const endDateInput = document.getElementById(endId);
     const startDateInput = document.getElementById(startId);
 
     const today = new Date();
-    today.setDate(today.getDate() - 1) // adjust today by 1
     const priorDate = new Date();
     priorDate.setDate(today.getDate() - daysBack);
 
-    endDateInput.value = formatDate(today);
-    startDateInput.value = formatDate(priorDate);
+    // Format to YYYY-MM-DD
+    const format = (date) => date.toISOString().split('T')[0];
+
+    endDateInput.value = format(today);
+    startDateInput.value = format(priorDate);
 
     // Set min/max logic
-    endDateInput.min = formatDate(priorDate);
-    startDateInput.max = formatDate(today);
+    endDateInput.min = format(priorDate);
+    startDateInput.max = format(today);
 }
 
-// Apply to both graph and data forms
+// Apply to both forms
 setDefaultDateRange('graph-start-date', 'graph-end-date');
 setDefaultDateRange('data-start-date', 'data-end-date');
-
-// Set default entry date to today
-document.addEventListener('DOMContentLoaded', () => {
-    const entryDateInput = document.getElementById('entry-date');
-    if (entryDateInput) {
-        const today = new Date();
-        today.setDate(today.getDate() - 1) // adjust today by 1
-        entryDateInput.value = formatDate(today);
-    }
-});
 
 // Prevent submission if dates invalid
 function syncDatePickers(startInput, endInput) {
@@ -118,11 +93,10 @@ function syncDatePickers(startInput, endInput) {
     });
 }
 
-// Apply to both graph and data modals
+// Apply to both modals
 syncDatePickers('graph-start-date', 'graph-end-date');
 syncDatePickers('data-start-date', 'data-end-date');
-
-// Pulls graph information as a list object
+const apiKey = 'J380G8OUFNIX2MUM';
 function pull_graph_data() {
     let graph = document.getElementById('graph-type').value;
     let data = document.getElementById('graph-data-select').value; // Get the graph data selection type
@@ -134,15 +108,11 @@ function pull_graph_data() {
     return [graph, data, start_date, end_date]
 }
 
-// Pulls data information as a list object
 function pull_data_data() {
-    let data = document.getElementById('data-data-select').value; // functions as above
-    if (data == 'data-type') {
-        data = document.getElementById('data-entry-type').value;
-    }
-    let start_date = document.getElementById('graph-start-date').value;
-    let end_date = document.getElementById('graph-end-date').value;
-    return [data, start_date, end_date]
+    let seriesId = 'USA';
+    let start_date = document.getElementById('data-start-date').value;
+    let end_date = document.getElementById('data-end-date').value;
+    return [seriesId, start_date, end_date]
 }
 
 // Load graph into preview display
@@ -158,18 +128,99 @@ document.getElementById('btn-graph-preview').addEventListener('click', () => {
 });
 
 // Load data into preview display
-document.getElementById('btn-data-preview').addEventListener('click', () => {
-    const start = document.getElementById('data-start-date').value;
-    const end = document.getElementById('data-end-date').value;
-    if ((start && end) && (start > end || end < start)) {
-        document.getElementById('data-preview').textContent = 'Invalid date range: Start date must precede end date.';
+document.getElementById('btn-data-preview').addEventListener('click', async () => {
+    // Get start and end dates from the input fields
+    const [seriesId, startDate, endDate] = pull_data_data();
+
+    // Validate date range
+    if (startDate && endDate && (startDate > endDate || endDate < startDate)) {
+        alert('Invalid date range: Start date must precede end date.');
         return;
     }
-    let info = pull_data_data();
-    document.getElementById('data-preview').innerHTML = `Will be the Data display of:<br>Data Type Selected: ${info[0]}<br>Over Time From ${info[1]} to ${info[2]}`;
+
+    // Set the Alpha Vantage API key
+    const apiKey = 'your_alpha_vantage_api_key';
+    
+    // Example for pulling USD to EUR exchange rate
+    const url = `https://www.alphavantage.co/query?function=FX_DAILY&from_symbol=USD&to_symbol=EUR&apikey=${apiKey}`;
+
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+
+        // Check if data is valid and available
+        if (!data['Time Series FX (Daily)']) {
+            document.getElementById('data-preview').innerHTML = `
+                <div class="error">
+                    <h3>Error: Data could not be retrieved.</h3>
+                </div>`;
+            return;
+        }
+
+        // Extract and filter the data based on the date range
+        const timeSeries = data['Time Series FX (Daily)'];
+        const filteredData = Object.entries(timeSeries)
+            .filter(([date, value]) => {
+                return date >= startDate && date <= endDate;
+            })
+            .map(([date, value]) => {
+                return {
+                    date: date,
+                    value: value['4. close'] // Closing exchange rate value for USD to EUR
+                };
+            });
+
+        // If no data found for the date range
+        if (filteredData.length === 0) {
+            document.getElementById('data-preview').innerHTML = `
+                <div class="no-data">
+                    <h3>No Data Found for the Selected Date Range.</h3>
+                </div>`;
+            return;
+        }
+
+        // Add reference to USD and the Metric (USD to EUR in this example)
+        const metricName = 'USD to EUR Exchange Rate';
+        const currencySymbol = 'EUR'; // Adjust to the target currency symbol
+
+        // Display filtered data in a pretty format
+        const dataContainer = document.createElement('div');
+        dataContainer.classList.add('data-container');
+
+        // Add a title and description
+        const title = document.createElement('h3');
+        title.innerHTML = `USD: ${metricName} Data (${startDate}-${endDate})`;
+        dataContainer.appendChild(title);
+
+        const description = document.createElement('p');
+        description.innerHTML = `This data shows the daily exchange rate between USD and EUR for the specified date range.`;
+        dataContainer.appendChild(description);
+
+        // Display each data item
+        filteredData.forEach(item => {
+            const dataItem = document.createElement('div');
+            dataItem.classList.add('data-item');
+            dataItem.innerHTML = `
+                <h4>Date: ${item.date}</h4>
+                <p><strong>Value (${currencySymbol}):</strong> ${item.value}</p>
+            `;
+            dataContainer.appendChild(dataItem);
+        });
+
+        // Clear existing preview and insert the new data
+        document.getElementById('data-preview').innerHTML = '';
+        document.getElementById('data-preview').appendChild(dataContainer);
+
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        document.getElementById('data-preview').innerHTML = `
+            <div class="error">
+                <h3>There was an error retrieving the data. Please try again later.</h3>
+            </div>`;
+    }
 });
 
-// Handle graph form submission (to generate a graph based on selected graph type, data type, and time)
+// Handle form submission (to generate a graph based on selected graph type, data type, and time)
 document.getElementById('graph-form').onsubmit = function(event) {
     event.preventDefault();
     const start = document.getElementById('graph-start-date').value;
@@ -189,7 +240,7 @@ document.getElementById('graph-form').onsubmit = function(event) {
     graph_modal.style.display = 'none';
 }
 
-// Handle data form submission (to generate a table based on selected data type and time)
+// Handle form submission (to generate a table based on selected data type and time)
 document.getElementById('data-form').onsubmit = function(event) {
     event.preventDefault();
     const start = document.getElementById('data-start-date').value;
@@ -206,7 +257,7 @@ document.getElementById('data-form').onsubmit = function(event) {
     data_modal.style.display = 'none';
 }
 ///////////////////////////////
-// Show the current GDP Data//
+//////// Navigation Menu //////
 //////////////////////////////
 const homeData = document.getElementById('homeButton');
 homeData.addEventListener('click', () => {
@@ -222,46 +273,9 @@ cpiData.addEventListener('click', () => {
 });
 const pceData = document.getElementById('pceButton');
 pceData.addEventListener('click', () => {
-    window.location.href = "/src/usd.html";
+    window.location.href = "/src/pce.html";
 });
 const fedData = document.getElementById('fedButton');
 fedData.addEventListener('click', () => {
     window.location.href = "/src/fed.html";
 });
-
-// Handle entry form submission (to generate an entry based on input fields)
-document.getElementById('entry-form').onsubmit = function(event) {
-    event.preventDefault();
-    console.log('Added some new data');
-    entry_modal.style.display = 'none';
-}
-
-const amountInput = document.getElementById('entry-amount');
-// Formatting the amount within the entry modal
-if (amountInput) {
-    // Allow only valid decimal numbers
-    amountInput.addEventListener('input', () => {
-        // Use a UNIX Regular Expressoion to remove any rejected characters
-        amountInput.value = amountInput.value.replace(/[^0-9.]/g, '');      
-        // Ensure there's only one decimal point
-        const parts = amountInput.value.split('.');
-        if (parts.length > 2) {
-            amountInput.value = parts[0] + '.' + parts[1]; // Drops remaining decimal part
-        }
-    });
-    // Format to 2 decimals with commas when in blur
-    amountInput.addEventListener('blur', () => {
-        let value = parseFloat(amountInput.value);
-        if (!isNaN(value)) {
-            amountInput.value = value.toLocaleString('en-US', {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-            });
-        }
-    });
-
-    // Clean value before submit (remove commas)
-    document.getElementById('entry-form').addEventListener('submit', function () {
-        amountInput.value = amountInput.value.replace(/,/g, '');
-    });
-}

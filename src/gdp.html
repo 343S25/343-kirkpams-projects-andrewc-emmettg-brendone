@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="authors" content="Andrew Cramer, ">
+    <title>Personal Budget Visualizer</title>
+    <link rel="stylesheet" href="styles/index_styles.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            Personal Budget Visualizer
+        </div>
+        <div class="content-container">
+            <div class="sidebar">
+                <ol class="nav-list">
+                    <li><button type="button" id="homeButton">Home</button></li>
+                    <li><button type="button" id="btn-graph-display">Graph Display</button></li>
+                    <li><button type="button" id="btn-data-display">Data Display</button></li>
+                    <li><button type="button" id="btn-export">Export</button></li>
+                    <li><button type="submit" id="gdpButton">Get GDP Data</button></li>
+                    <li><button type="submit" id="cpiButton">Get CPI Data </button></li>
+                    <li><button type="submit" id="pceButton">Get USD Data</button></li>
+                    <li><button type="submit" id="fedButton">Get FED rate</button></li>
+                </ol>
+            </div>
+            <div class="main">
+                <div class="content">
+                    <!-- Chart should be embedded here -->
+                    <h3 id="display-title">Display Area</h3>
+                    <div id="chart">
+                        <p id="temp-content"></p>
+                        <!-- Chart JS or iframe should go here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="graph-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn close-modal" id="close-graph-modal">&times;</span>
+            <h2>Graph Display</h2>
+            <form id="graph-form">
+                <div class="form-group">
+                    <label for="graph-start-date">Start Date</label>
+                    <input type="date" id="graph-start-date" name="graph-start-date">
+                </div>
+                <div class="form-group">
+                    <label for="graph-end-date">End Date</label>
+                    <input type="date" id="graph-end-date" name="graph-end-date">
+                </div>
+                <div class="form-actions">
+                    <button type="button" id="btn-graph-preview">Preview</button>
+                    <button type="submit" id="submit-graph-form">Generate Graph</button>
+                </div>
+            </form>
+            <div id="graph-area" class="modal-content-area">
+                <!-- Graph/Chart content will go here -->
+                <p id="graph-preview">Preview Graph content goes here.</p>
+            </div>
+        </div>
+    </div>
+    <div id="data-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn close-modal" id="close-data-modal">&times;</span>
+            <h2>Data Display</h2>
+            <form id="data-form">
+                <div class="form-group">
+                    <label for="data-start-date">Start Date</label>
+                    <input type="date" id="data-start-date" name="data-start-date">
+                </div>
+                <div class="form-group">
+                    <label for="data-end-date">End Date</label>
+                    <input type="date" id="data-end-date" name="data-end-date">
+                </div>
+                <div class="form-actions">
+                    <button type="button" id="btn-data-preview">Preview</button>
+                    <button type="submit" id="submit-data-form">Submit Data</button>
+                </div>
+            </form>
+            <div id="data-area" class="modal-content-area">
+                <!-- Data content will go here -->
+                <p id="data-preview">Preview Data content goes here.</p>
+            </div>
+        </div>
+    </div>
+    <script src="scripts/gdp.js"></script>
+</body>
+
+</html>
