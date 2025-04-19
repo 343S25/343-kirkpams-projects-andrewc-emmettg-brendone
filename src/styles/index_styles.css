@@ -162,7 +162,7 @@ form {
   padding: 6px;
 }
 
-select, input[type="date"] {
+select, input[type="date"], input[type="text"], #notes {
   padding: 8px;
   font-size: 1em;
   font-family: Arial, sans-serif;
