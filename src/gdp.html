@@ -22,7 +22,7 @@
                     <li><button type="button" id="btn-export">Export</button></li>
                     <li><button type="submit" id="gdpButton">Get GDP Data</button></li>
                     <li><button type="submit" id="cpiButton">Get CPI Data </button></li>
-                    <li><button type="submit" id="pceButton">Get PCE Data</button></li>
+                    <li><button type="submit" id="pceButton">Get USD Data</button></li>
                     <li><button type="submit" id="fedButton">Get FED rate</button></li>
                 </ol>
             </div>
@@ -68,25 +68,6 @@
             <h2>Data Display</h2>
             <form id="data-form">
                 <div class="form-group">
-                    <label for="data-data-select">Select Data</label>
-                    <select id="data-data-select" name="data-data-select">
-                        <option value="data-all" selected>All Entries</option>
-                        <option value="data-type">Entries by Type</option>
-                    </select>
-                </div>
-                <div class="form-group" id="data-type-select-group" style="display: none;">
-                    <label for="data-entry-type">Entry Type</label>
-                    <select id="data-entry-type" name="data-entry-type">
-                        <option value="food" selected>Food Expense</option>
-                        <option value="transport">Transport Expense</option>
-                        <option value="living">Living Expense</option>
-                        <option value="bills">Bills</option>
-                        <option value="entertainment">Entertainment</option>
-                        <option value="income">Income/Revenue</option>
-                        <option value="other">Other</option>
-                    </select>
-                </div>
-                <div class="form-group">
                     <label for="data-start-date">Start Date</label>
                     <input type="date" id="data-start-date" name="data-start-date">
                 </div>
@@ -105,38 +86,6 @@
             </div>
         </div>
     </div>
-    <!-- TODO add entry modal... OR make btn-add-entry link to a new page-->
-    <!-- TODO Andrew can do this after classes ~ 4:00pm:
-            entry object: {
-                category: {
-                    type: "type"
-                    subtype: "subtype | none"
-                }
-                amount: +-1234.56
-                time: "YYYY-MM-DD"
-                notes: "optional | none"
-            }
-
-            example (McDonalds expense entry): {
-                category: {
-                    type: "food"
-                    subtype: "fast-food"
-                }
-                amount: -12.34
-                time: "2025-04-18"
-                notes: "McDonalds lunch"
-            }
-
-            another example (FoodLion expense entry): {
-                category: {
-                    type: "food"
-                    subtype: "groceries"
-                }
-                amount: -54.32
-                time: "2025-04-16"
-                notes: "Purchased 5 days of groceries at FoodLion"
-            }
-        -->
     <script src="scripts/gdp.js"></script>
 </body>
 

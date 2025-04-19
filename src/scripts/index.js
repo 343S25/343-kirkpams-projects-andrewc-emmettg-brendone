@@ -208,7 +208,7 @@ cpiData.addEventListener('click', () => {
 });
 const pceData = document.getElementById('pceButton');
 pceData.addEventListener('click', () => {
-    window.location.href = "/src/pce.html";
+    window.location.href = "/src/usd.html";
 });
 const fedData = document.getElementById('fedButton');
 fedData.addEventListener('click', () => {

@@ -39,7 +39,7 @@ document.getElementById('close-data-modal').addEventListener('click', () => {
 });
 
 // Close the graph or data modal if user clicks outside of it
-window.onclick = function(event) {
+window.onclick = function (event) {
     if (event.target == graph_modal) {
         graph_modal.style.display = 'none';
     }
@@ -56,30 +56,17 @@ const typeSelectGroup = document.getElementById('graph-type-select-group');
 // Show the hidden data dropdown if needed
 const ddataSelect = document.getElementById('data-data-select');
 const dtypeSelectGroup = document.getElementById('data-type-select-group');
-ddataSelect.addEventListener('change', () => {
-    if (ddataSelect.value == 'data-type') {
-        dtypeSelectGroup.style.display = 'flex';
-    } else {
-        dtypeSelectGroup.style.display = 'none';
-    }
-});
-function setDefaultDateRange(startId, endId, daysBack = 30) {
-    const endDateInput = document.getElementById(endId);
+function setDefaultDateRange(startId, endId) {
     const startDateInput = document.getElementById(startId);
+    const endDateInput = document.getElementById(endId);
 
-    const today = new Date();
-    const priorDate = new Date();
-    priorDate.setDate(today.getDate() - daysBack);
+    // Set to latest quarter statically
+    startDateInput.value = '2024-01-01';
+    endDateInput.value = '2024-03-31';
 
-    // Format to YYYY-MM-DD
-    const format = (date) => date.toISOString().split('T')[0];
-
-    endDateInput.value = format(today);
-    startDateInput.value = format(priorDate);
-
-    // Set min/max logic
-    endDateInput.min = format(priorDate);
-    startDateInput.max = format(today);
+    // Optionally set limits if you want to restrict selection
+    startDateInput.max = '2024-03-31';
+    endDateInput.min = '2024-01-01';
 }
 
 // Apply to both forms
@@ -103,7 +90,7 @@ function syncDatePickers(startInput, endInput) {
 // Apply to both modals
 syncDatePickers('graph-start-date', 'graph-end-date');
 syncDatePickers('data-start-date', 'data-end-date');
-
+const apiKey = 'J380G8OUFNIX2MUM';
 function pull_graph_data() {
     let graph = document.getElementById('graph-type').value;
     let data = document.getElementById('graph-data-select').value; // Get the graph data selection type
@@ -116,13 +103,9 @@ function pull_graph_data() {
 }
 
 function pull_data_data() {
-    let data = document.getElementById('data-data-select').value; // functions as above
-    if (data == 'data-type') {
-        data = document.getElementById('data-entry-type').value;
-    }
-    let start_date = document.getElementById('graph-start-date').value;
-    let end_date = document.getElementById('graph-end-date').value;
-    return [data, start_date, end_date]
+    let start_date = document.getElementById('data-start-date').value;
+    let end_date = document.getElementById('data-end-date').value;
+    return [start_date, end_date]
 }
 
 // Load graph into preview display
@@ -138,19 +121,75 @@ document.getElementById('btn-graph-preview').addEventListener('click', () => {
 });
 
 // Load data into preview display
-document.getElementById('btn-data-preview').addEventListener('click', () => {
-    const start = document.getElementById('data-start-date').value;
-    const end = document.getElementById('data-end-date').value;
-    if ((start && end) && (start > end || end < start)) {
-        document.getElementById('data-preview').textContent = 'Invalid date range: Start date must precede end date.';
+document.getElementById('btn-data-preview').addEventListener('click', async () => {
+    // Get start and end dates from the input fields
+    const [startDate, endDate] = pull_data_data();
+
+    // Validate date range
+    if (startDate && endDate && (startDate > endDate || endDate < startDate)) {
+        alert('Invalid date range: Start date must precede end date.');
         return;
     }
-    let info = pull_data_data();
-    document.getElementById('data-preview').innerHTML = `Will be the Data display of:<br>Data Type Selected: ${info[0]}<br>Over Time From ${info[1]} to ${info[2]}`;
+
+
+    // Example for pulling USD to EUR exchange rate
+    const url = `https://www.alphavantage.co/query?function=CPI&interval=monthly&apikey=${apiKey}`;
+        try {
+        const response = await fetch(url);
+        const data = await response.json();
+
+
+        if (!data['data']) {
+            document.getElementById('data-preview').innerHTML = `
+        <div class="error">
+            <h3>Error: CPI data could not be retrieved.</h3>
+        </div>`;
+            return;
+        }
+        const timeSeries = data['data'];
+
+
+        // If no data found for the date range
+        if (timeSeries.length === 0) {
+            document.getElementById('data-preview').innerHTML = `
+                <div class="no-data">
+                    <h3>No Data Found for the Selected Date Range.</h3>
+                </div>`;
+            return;
+        }
+        const dataContainer = document.createElement('div');
+        const title = document.createElement('h3');
+        title.innerHTML = `CPI Data (${startDate} to ${endDate})`;
+        dataContainer.appendChild(title);
+
+        const description = document.createElement('p');
+        description.innerHTML = `This data shows the Consumer Price Index (CPI) over time.`;
+        dataContainer.appendChild(description);
+
+        timeSeries.forEach(item => {
+            const dataItem = document.createElement('div');
+            dataItem.classList.add('data-item');
+            dataItem.innerHTML = `
+        <h4>Date: ${item.date}</h4>
+        <p><strong>CPI Value:</strong> ${item.value}</p>`;
+            dataContainer.appendChild(dataItem);
+        });
+
+        // Clear existing preview and insert the new data
+        document.getElementById('data-preview').innerHTML = '';
+        document.getElementById('data-preview').appendChild(dataContainer);
+
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        document.getElementById('data-preview').innerHTML = `
+            <div class="error">
+                <h3>There was an error retrieving the data. Please try again later.</h3>
+            </div>`;
+    }
 });
 
 // Handle form submission (to generate a graph based on selected graph type, data type, and time)
-document.getElementById('graph-form').onsubmit = function(event) {
+document.getElementById('graph-form').onsubmit = function (event) {
     event.preventDefault();
     const start = document.getElementById('graph-start-date').value;
     const end = document.getElementById('graph-end-date').value;
@@ -170,7 +209,7 @@ document.getElementById('graph-form').onsubmit = function(event) {
 }
 
 // Handle form submission (to generate a table based on selected data type and time)
-document.getElementById('data-form').onsubmit = function(event) {
+document.getElementById('data-form').onsubmit = function (event) {
     event.preventDefault();
     const start = document.getElementById('data-start-date').value;
     const end = document.getElementById('data-end-date').value;
@@ -186,7 +225,7 @@ document.getElementById('data-form').onsubmit = function(event) {
     data_modal.style.display = 'none';
 }
 ///////////////////////////////
-// Show the current GDP Data//
+//////// Navigation Menu //////
 //////////////////////////////
 const homeData = document.getElementById('homeButton');
 homeData.addEventListener('click', () => {
@@ -202,7 +241,7 @@ cpiData.addEventListener('click', () => {
 });
 const pceData = document.getElementById('pceButton');
 pceData.addEventListener('click', () => {
-    window.location.href = "/src/pce.html";
+    window.location.href = "/src/usd.html";
 });
 const fedData = document.getElementById('fedButton');
 fedData.addEventListener('click', () => {
