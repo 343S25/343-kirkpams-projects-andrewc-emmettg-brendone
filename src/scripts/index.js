@@ -73,6 +73,12 @@ ddataSelect.addEventListener('change', () => {
         dtypeSelectGroup.style.display = 'none';
     }
 });
+function formatDate(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Adds leading zero if needed
+    const day = String(date.getDate()).padStart(2, '0'); // Adds leading zero if needed
+    return `${year}-${month}-${day}`;
+}
 function setDefaultDateRange(startId, endId, daysBack = 30) {
     const endDateInput = document.getElementById(endId);
     const startDateInput = document.getElementById(startId);
@@ -264,4 +270,5 @@ if (amountInput) {
     document.getElementById('entry-form').addEventListener('submit', function () {
         amountInput.value = amountInput.value.replace(/,/g, '');
     });
+
 }
