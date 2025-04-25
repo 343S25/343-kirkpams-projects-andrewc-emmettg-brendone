@@ -261,21 +261,25 @@ document.getElementById('data-form').onsubmit = function(event) {
 //////////////////////////////
 const homeData = document.getElementById('homeButton');
 homeData.addEventListener('click', () => {
-    window.location.href = "/src/index.html";
+    window.location.href = "index.html";
 });
+
 const gdpData = document.getElementById('gdpButton');
 gdpData.addEventListener('click', () => {
-    window.location.href = "/src/gdp.html";
+    window.location.href = "gdp.html";
 });
+
 const cpiData = document.getElementById('cpiButton');
 cpiData.addEventListener('click', () => {
-    window.location.href = "/src/cpi.html";
+    window.location.href = "cpi.html";
 });
+
 const pceData = document.getElementById('pceButton');
 pceData.addEventListener('click', () => {
-    window.location.href = "/src/pce.html";
+    window.location.href = "usd.html";
 });
+
 const fedData = document.getElementById('fedButton');
 fedData.addEventListener('click', () => {
-    window.location.href = "/src/fed.html";
+    window.location.href = "fed.html";
 });
