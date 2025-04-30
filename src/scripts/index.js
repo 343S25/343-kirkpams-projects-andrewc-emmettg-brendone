@@ -134,7 +134,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const entryDateInput = document.getElementById('entry-date');
     if (entryDateInput) {
         const today = new Date();
-        today.setDate(today.getDate() - 1) // adjust today by 1
+        today.setDate(today.getDate());
         entryDateInput.value = formatDate(today);
     }
 
