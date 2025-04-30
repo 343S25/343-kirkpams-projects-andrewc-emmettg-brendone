@@ -113,7 +113,7 @@ function setDefaultDateRange(startId, endId, daysBack = 30) {
     const startDateInput = document.getElementById(startId);
 
     const today = new Date();
-    today.setDate(today.getDate() - 1) // adjust today by 1
+    today.setDate(today.getDate());
     const priorDate = new Date();
     priorDate.setDate(today.getDate() - daysBack);
 
