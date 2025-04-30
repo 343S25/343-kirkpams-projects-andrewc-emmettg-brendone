@@ -52,6 +52,40 @@ window.onclick = function(event) {
     }
 }
 
+// Dynamically generate inner subtypes for list
+document.addEventListener("DOMContentLoaded", () => {
+    // Subtypes for each type, their values will be lowercase with '-' replacing ' '.
+    const typeToSubtypes = {
+        food: ["Groceries", "Dining Out", "Fast Food"],
+        transport: ["Gas", "Public Transit", "Car Maintenance", "Ride Share"],
+        living: ["Rent", "Mortgage", "Furnishings", "Home Supplies"],
+        bills: ["Electric", "Water", "Internet", "Phone", "Insurance"],
+        entertainment: ["Streaming", "Games", "Events", "Hobbies"],
+        income: ["Salary", "Investments", "Other Income"],
+        other: ["Miscellaneous", "One-time", "Uncategorized"]
+    };
+
+    const typeSelect = document.getElementById("entry-type");
+    const subtypeSelect = document.getElementById("entry-subtype");
+
+    function updateSubtypes(selectedType) {
+        subtypeSelect.innerHTML = ""; // Clears existing options
+        typeToSubtypes[selectedType].forEach(subtype => {
+            const option = document.createElement("option");
+            option.value = subtype.toLowerCase().replace(/ /g, "-");
+            option.textContent = subtype;
+            subtypeSelect.appendChild(option);
+        });
+    }
+
+    updateSubtypes(typeSelect.value);
+
+    // Update subtypes on type change
+    typeSelect.addEventListener("change", () => {
+        updateSubtypes(typeSelect.value);
+    });
+});
+
 // Show the hidden graph dropdown if needed
 const dataSelect = document.getElementById('graph-data-select');
 const typeSelectGroup = document.getElementById('graph-type-select-group');
@@ -103,6 +137,38 @@ document.addEventListener('DOMContentLoaded', () => {
         today.setDate(today.getDate() - 1) // adjust today by 1
         entryDateInput.value = formatDate(today);
     }
+
+    //Dynamically generates inner-subtypes for lists:
+    const typeToSubtypes = {
+        food: ["Groceries", "Dining Out", "Fast Food"],
+        transport: ["Gas", "Public Transit", "Car Maintenance", "Ride Share"],
+        living: ["Rent", "Mortgage", "Furnishings", "Home Supplies"],
+        bills: ["Electric", "Water", "Internet", "Phone", "Insurance"],
+        entertainment: ["Streaming", "Games", "Events", "Hobbies"],
+        income: ["Salary", "Investments", "Other Income"],
+        other: ["Miscellaneous", "One-time", "Uncategorized"]
+    };
+    // Subtypes above are listed for each type, their values will be lowercase with '-' replacing ' '.
+
+    const typeSelect = document.getElementById("entry-type");
+    const subtypeSelect = document.getElementById("entry-subtype");
+
+    function updateSubtypes(selectedType) {
+        subtypeSelect.innerHTML = ""; // Clears existing options
+        typeToSubtypes[selectedType].forEach(subtype => {
+            const option = document.createElement("option");
+            option.value = subtype.toLowerCase().replace(/ /g, "-"); // Replacing spaces with -, making lowercase.
+            option.textContent = subtype;
+            subtypeSelect.appendChild(option);
+        });
+    }
+    
+    updateSubtypes(typeSelect.value);
+
+    // Update subtypes on type change
+    typeSelect.addEventListener("change", () => {
+        updateSubtypes(typeSelect.value);
+    });
 });
 
 // Prevent submission if dates invalid
