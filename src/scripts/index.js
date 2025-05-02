@@ -96,6 +96,30 @@ document.addEventListener("DOMContentLoaded", () => {
     typeSelect.addEventListener("change", () => {
         updateSubtypes(typeSelect.value);
     });
+
+    // Generate Graph
+    document.getElementById("btn-generate").addEventListener('click', () => {
+        const ctx = document.getElementById('myChart');
+
+        new Chart(ctx, {
+          type: 'doughnut',
+          data: {
+            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+            datasets: [{
+              label: '# of Votes',
+              data: [12, 19, 3, 5, 2, 3],
+              borderWidth: 1
+            }]
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        });
+    })
 });
 
 // Show the hidden graph dropdown if needed
