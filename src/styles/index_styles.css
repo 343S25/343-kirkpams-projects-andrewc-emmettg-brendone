@@ -112,6 +112,12 @@ body, html, pre {
   border: 1px solid #ccc;
 }
 
+#piggyboy {
+  position: relative;
+  bottom: 0;
+  margin-top: 100%;
+}
+
 /* Modal styles */
 .modal {
   display: none; /* Hidden by default */
