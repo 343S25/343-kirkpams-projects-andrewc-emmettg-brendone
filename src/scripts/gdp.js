@@ -132,15 +132,12 @@ document.getElementById('btn-data-preview').addEventListener('click', async () =
     }
 
     // Set the Alpha Vantage API key
-    const apiKey = 'your_alpha_vantage_api_key';
 
     // Example for pulling USD to EUR exchange rate
     const url = `https://www.alphavantage.co/query?function=REAL_GDP&interval=quarterly&apikey=${apiKey}`;
     try {
         const response = await fetch(url);
         const data = await response.json();
-
-
         if (!data['data']) {
             document.getElementById('data-preview').innerHTML = `
         <div class="error">
@@ -149,8 +146,6 @@ document.getElementById('btn-data-preview').addEventListener('click', async () =
             return;
         }
         const timeSeries = data['data'];
-
-
         // If no data found for the date range
         if (timeSeries.length === 0) {
             document.getElementById('data-preview').innerHTML = `
@@ -180,7 +175,6 @@ document.getElementById('btn-data-preview').addEventListener('click', async () =
         // Clear existing preview and insert the new data
         document.getElementById('data-preview').innerHTML = '';
         document.getElementById('data-preview').appendChild(dataContainer);
-
     } catch (error) {
         console.error('Error fetching data:', error);
         document.getElementById('data-preview').innerHTML = `
