@@ -263,6 +263,14 @@ button:hover {
     position: absolute;
     bottom: 60px;
     left: 70px;
+
+    /* Adds a scroll bar to the nav section */
+    max-height: 60vh;
+    overflow-y: scroll;      /* Always show scrollbar */
+    scrollbar-width: auto;   /* For Firefox */
+    background-color: #2c3e50;
+    padding: 10px;
+    border-radius: 8px;
   }
 
   .sidebar:hover {
