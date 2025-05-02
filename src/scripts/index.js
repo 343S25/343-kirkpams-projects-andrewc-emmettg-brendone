@@ -4,6 +4,13 @@
  * Author(s): Andrew Cramer, 
  */
 
+// TODO Andrew will refactor the index.js once all funcitonality works.
+//      - modals will have their own scripts.
+//      - make the comments and formatting cleaner
+
+
+let all_data = [];
+
 // Get modals
 const graph_modal = document.getElementById('graph-modal');
 const data_modal = document.getElementById('data-modal');
@@ -327,7 +334,18 @@ fedData.addEventListener('click', () => {
 // Handle entry form submission (to generate an entry based on input fields)
 document.getElementById('entry-form').onsubmit = function(event) {
     event.preventDefault();
-    console.log('Added some new data');
+    new_data = {
+        category: {
+            type: document.getElementById('entry-type').value, 
+            subtype: document.getElementById('entry-subtype').value
+        }, 
+        amount: document.getElementById('entry-amount').value, 
+        date: document.getElementById('entry-date').value, 
+        notes: document.getElementById('notes').value || "No notes."
+    };
+    all_data.push(new_data);
+    console.log('Added some new data:');
+    console.log(new_data);
     entry_modal.style.display = 'none';
 }
 
