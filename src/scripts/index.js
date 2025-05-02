@@ -4,6 +4,11 @@
  * Author(s): Andrew Cramer, 
  */
 
+// TODO Andrew will refactor the index.js once all funcitonality works.
+//      - modals will have their own scripts.
+//      - make the comments and formatting cleaner
+
+
 // Get modals
 const graph_modal = document.getElementById('graph-modal');
 const data_modal = document.getElementById('data-modal');
