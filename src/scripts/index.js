@@ -9,7 +9,12 @@
 //      - make the comments and formatting cleaner
 
 
+// All data, memory persists in localStorage
 let all_data = [];
+const stored_data = localStorage.getItem('data-entries');
+if (stored_data) {
+    all_data = JSON.parse(stored_data);
+}
 
 // Get modals
 const graph_modal = document.getElementById('graph-modal');
@@ -320,6 +325,7 @@ document.getElementById('entry-form').onsubmit = function(event) {
         notes: document.getElementById('notes').value || "No notes."
     };
     all_data.push(new_data);
+    localStorage.setItem('data-entries', JSON.stringify(all_data));
     console.log('Added some new data:');
     console.log(new_data);
     entry_modal.style.display = 'none';
