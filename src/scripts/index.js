@@ -9,6 +9,8 @@
 //      - make the comments and formatting cleaner
 
 
+let all_data = [];
+
 // Get modals
 const graph_modal = document.getElementById('graph-modal');
 const data_modal = document.getElementById('data-modal');
@@ -317,6 +319,7 @@ document.getElementById('entry-form').onsubmit = function(event) {
         date: document.getElementById('entry-date').value, 
         notes: document.getElementById('notes').value || "No notes."
     };
+    all_data.push(new_data);
     console.log('Added some new data:');
     console.log(new_data);
     entry_modal.style.display = 'none';
