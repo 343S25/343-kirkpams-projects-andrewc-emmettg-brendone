@@ -34,11 +34,9 @@
                 <div class="content">
                     <!-- Chart should be embedded here -->
                     <h3 id="display-title">Display Area</h3>
+                    <button id="clear-btn">Clear Display</button>
                     <div id="chart">
-                        <p id="temp-content"></p>
-                        <!-- Chart JS or iframe should go here -->
                         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-                        <button type="button" id="btn-generate">Generate Chart...</button>
                         <canvas id="myChart"></canvas>
                     </div>
                 </div>
@@ -53,9 +51,7 @@
                 <div class="form-group">
                     <label for="graph-type">Graph Type</label>
                     <select id="graph-type" name="graph-type">
-                        <option value="line" selected>Line Chart</option>
-                        <option value="pie">Pie Chart</option>
-                        <option value="bar">Stacked Bar Chart</option>
+                        <option value="line" selected>Doughnut Chart</option>
                     </select>
                 </div>
                 <div class="form-group">

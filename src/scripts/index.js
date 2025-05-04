@@ -97,17 +97,41 @@ document.addEventListener("DOMContentLoaded", () => {
         updateSubtypes(typeSelect.value);
     });
 
+    // Clear Display Zone
+    document.getElementById("clear-btn").addEventListener('click', () => { 
+        document.getElementById('chart').innerHTML = '<script src="https://cdn.jsdelivr.net/npm/chart.js"></script><canvas id="myChart"></canvas>';
+    });
+
     // Generate Graph
-    document.getElementById("btn-generate").addEventListener('click', () => {
+    document.getElementById("submit-graph-form").addEventListener('click', () => {
         const ctx = document.getElementById('myChart');
+        let allLabels = [];
+        let allNumData = [];
+        let totalNumData = 0;
+
+        all_data.forEach((data) => {
+            allLabels.push(data['category']['type']);
+             
+            let temp = data['amount'].split(',');
+            temp = temp[0] + temp[1];
+            totalNumData += parseFloat(temp);
+            allNumData.push(temp);
+        })
+
+        let numsOuttaHunnid = []
+        allNumData.forEach((numdata) => {
+            numsOuttaHunnid.push(numdata/totalNumData);
+        })
+
+        console.log(all_data);
 
         new Chart(ctx, {
           type: 'doughnut',
           data: {
-            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+            labels: allLabels,
             datasets: [{
-              label: '# of Votes',
-              data: [12, 19, 3, 5, 2, 3],
+              label: '# of Total Expendatures',
+              data: numsOuttaHunnid,
               borderWidth: 1
             }]
           },
@@ -115,11 +139,62 @@ document.addEventListener("DOMContentLoaded", () => {
             scales: {
               y: {
                 beginAtZero: true
-              }
-            }
-          }
-        });
+              }}}});
     })
+});
+
+// Show Data
+document.getElementById("submit-data-form").addEventListener('click', () => { 
+    
+    const table = document.createElement('table');
+    const thead = document.createElement('thead');
+    const tbody = document.createElement('tbody');
+    
+    const headerRow = document.createElement('tr');
+    const th1 = document.createElement('th');
+    th1.textContent = 'Type';
+    headerRow.appendChild(th1);
+    const th2 = document.createElement('th');
+    th2.textContent = 'Subtype';
+    headerRow.appendChild(th2);
+    const th3 = document.createElement('th');
+    th3.textContent = 'Amount';
+    headerRow.appendChild(th3);
+    const th4 = document.createElement('th');
+    th4.textContent = 'Date';
+    headerRow.appendChild(th4);
+    const th5 = document.createElement('th');
+    th5.textContent = 'Notes';
+    headerRow.appendChild(th5);
+
+    thead.appendChild(headerRow);
+    
+    // Create table body
+    all_data.forEach(item => {
+        const row = document.createElement('tr');
+        const cell = document.createElement('td');
+        cell.textContent = item['category']['type'];
+        row.appendChild(cell);
+        tbody.appendChild(row);
+        
+    });
+
+    all_data.forEach(item => {
+        const row = document.createElement('tr');
+        const cell = document.createElement('td');
+        cell.textContent = item['category']['subtype'];
+        row.appendChild(cell);
+        tbody.appendChild(row);
+        
+    });
+
+
+
+    table.appendChild(thead);
+    table.appendChild(tbody);
+
+    // Append the table to the chart zone
+   document.getElementById("chart").appendChild(table);
 });
 
 // Show the hidden graph dropdown if needed
