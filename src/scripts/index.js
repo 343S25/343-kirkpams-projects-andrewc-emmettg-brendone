@@ -243,9 +243,9 @@ function pull_data_data() {
     if (data == 'data-type') {
         data = document.getElementById('data-entry-type').value;
     }
-    let start_date = document.getElementById('graph-start-date').value;
-    let end_date = document.getElementById('graph-end-date').value;
-    return [data, start_date, end_date]
+    let start_date = document.getElementById('data-start-date').value;
+    let end_date = document.getElementById('data-end-date').value;
+    return {type: data, start: start_date, end: end_date}
 }
 
 // Load graph into preview display
@@ -262,14 +262,24 @@ document.getElementById('btn-graph-preview').addEventListener('click', () => {
 
 // Load data into preview display
 document.getElementById('btn-data-preview').addEventListener('click', () => {
-    const start = document.getElementById('data-start-date').value;
-    const end = document.getElementById('data-end-date').value;
-    if ((start && end) && (start > end || end < start)) {
-        document.getElementById('data-preview').textContent = 'Invalid date range: Start date must precede end date.';
+    const data_preview = document.getElementById('data-preview');
+    let info = pull_data_data();
+    console.log(info);
+    if ((info.start && info.end) && (info.start > info.end || info.end < info.start)) {
+        data_preview.textContent = 'Invalid date range: Start date must precede end date.';
         return;
     }
-    let info = pull_data_data();
-    document.getElementById('data-preview').innerHTML = `Will be the Data display of:<br>Data Type Selected: ${info[0]}<br>Over Time From ${info[1]} to ${info[2]}`;
+    let filtered = [];
+    all_data.forEach(entry => {
+        if (entry.date <= info.end && entry.date >= info.start && (info.type == 'data-all' || info.type == entry.category.type)) {
+            filtered.push(entry);
+        }
+    });
+    data_preview.textContent = ""; // Reset the display
+    if (filtered.length < 1) data_preview.textContent = "No entries found.";
+    filtered.forEach(entry => {
+        data_preview.textContent += JSON.stringify(entry) + '\n';
+    });
 });
 
 // Handle graph form submission (to generate a graph based on selected graph type, data type, and time)
