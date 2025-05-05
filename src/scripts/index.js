@@ -170,6 +170,8 @@ ddataSelect.addEventListener('change', () => {
         dtypeSelectGroup.style.display = 'none';
     }
 });
+if (ddataSelect.value == 'data-type') dtypeSelectGroup.style.display = 'flex';
+
 const formatDate = (date) => date.toISOString().split('T')[0];
 function setDefaultDateRange(startId, endId, daysBack = 30) {
     const endDateInput = document.getElementById(endId);
@@ -498,22 +500,31 @@ fedData.addEventListener('click', () => {
 // Handle entry form submission (to generate an entry based on input fields)
 document.getElementById('entry-form').onsubmit = function(event) {
     event.preventDefault();
-    new_data = {
-        category: {
-            type: document.getElementById('entry-type').value, 
-            subtype: document.getElementById('entry-subtype').value
-        }, 
-        amount: document.getElementById('entry-amount').value, 
-        date: document.getElementById('entry-date').value, 
-        notes: document.getElementById('notes').value || "No notes."
+
+    const type = document.getElementById('entry-type').value;
+    const subtype = document.getElementById('entry-subtype').value;
+    const amount = document.getElementById('entry-amount').value;
+    const date = document.getElementById('entry-date').value;
+    const notes = document.getElementById('notes').value || "No notes.";
+
+    const confirmation = confirm(`Confirm adding the following entry?\n\nType: ${type}\nSubtype: ${subtype}\nAmount: ${amount}\nDate: ${date}\nNotes: ${notes}`);
+
+    if (!confirmation) return; // Stop submission if user cancels
+
+    const new_data = {
+        category: { type: type, subtype: subtype },
+        amount: amount.replace(/,/g, ''), // Ensure clean amount
+        date: date,
+        notes: notes
     };
-    all_data = getData();
+
+    let all_data = getData();
     all_data.push(new_data);
     localStorage.setItem('data-entries', JSON.stringify(all_data));
     console.log('Added some new data:');
     console.log(new_data);
     entry_modal.style.display = 'none';
-}
+};
 
 const amountInput = document.getElementById('entry-amount');
 // Formatting the amount within the entry modal
