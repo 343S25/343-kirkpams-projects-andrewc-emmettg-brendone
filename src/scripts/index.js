@@ -331,24 +331,21 @@ document.getElementById('graph-form').onsubmit = function(event) {
 }
 
 function makeTableSortable(table) {
-
     if (!table) return;
-  
     const headers = table.querySelectorAll('th');
     let sortDirection = {};
   
     headers.forEach((header, index) => {
-      header.style.cursor = 'pointer';
+      header.style.cursor = 'pointer'; // Pointer cursor to indicate clickable
       header.addEventListener('click', () => {
-        const direction = sortDirection[index] === 'asc' ? 'desc' : 'asc';
+        const direction = sortDirection[index] === 'asc' ? 'desc' : 'asc'; // Switch ascend/descend sort
         sortDirection = {};
         sortDirection[index] = direction;
   
-        // Clean up sort indicators
-        headers.forEach(h => h.textContent = h.textContent.replace(/[\u25B2\u25BC]/g, '').trim());
-        header.textContent += direction === 'asc' ? ' ▲' : ' ▼';
+        headers.forEach(h => h.textContent = h.textContent.replace(/[\u25B2\u25BC]/g, '').trim()); // Unicodes for up and down arrows.
+        header.textContent += direction === 'asc' ? ' ▲' : ' ▼'; // Arrows will be displayed
   
-        sortTableByColumn(table, index, direction === 'asc');
+        sortTableByColumn(table, index, direction === 'asc'); // Start with ascending
       });
     });
   
@@ -359,17 +356,16 @@ function makeTableSortable(table) {
       rows.sort((a, b) => {
         const valA = a.children[columnIndex].textContent.trim();
         const valB = b.children[columnIndex].textContent.trim();
-  
+        // Evaluates non-numeric data
         const parsedA = isNaN(valA) ? valA.toLowerCase() : parseFloat(valA);
         const parsedB = isNaN(valB) ? valB.toLowerCase() : parseFloat(valB);
-  
-        return asc ? (parsedA > parsedB ? 1 : -1) : (parsedA < parsedB ? 1 : -1);
+        return asc ? (parsedA > parsedB ? 1 : -1) : (parsedA < parsedB ? 1 : -1); // Ordering rows
       });
-  
-      rows.forEach(row => tbody.appendChild(row));
+      rows.forEach(row => tbody.appendChild(row)); // Add rows in new order
     }
   }
   
+  // Wait for table to be created, in the case of a very slow table-display time.
   function waitForTableAndMakeSortable(table, interval = 200, timeout = 5000) {
     const startTime = Date.now();
     const timer = setInterval(() => {
