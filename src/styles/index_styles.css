@@ -103,14 +103,22 @@ body, html, pre {
   height: 400px;
   background-color: white;
   border: 1px solid #ccc;
+  margin: 2% auto;
+  overflow-y: auto;           /* allows scroll both vertically and horizontally if needed */
+  box-sizing: border-box;
 }
 
 /* Table styles */
 .styled-table {
-  width: 90%;
-  margin: 0 auto;
-  padding: 5%;
+  margin: 2% auto;
   border-collapse: collapse;
+  width: 96%;
+  max-width: 96%;
+  height: 96%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 10px;
+  box-sizing: border-box;
 }
 
 /* Table header */
@@ -122,6 +130,16 @@ body, html, pre {
   border: 1px solid #ddd; /* Adds lines between table cells */
   padding: 10px;
   text-align: center; /* Centers the text inside table cells */
+}
+
+/* Sticky table header */
+.styled-table thead th {
+  position: sticky;
+  top: 0;
+  background-color: #f2f2f2; /* Important: visible background for sticky */
+  z-index: 2;                /* Ensures it stays on top */
+  padding: 10px;
+  border: 1px solid #ddd;
 }
 
 /* Even rows */
@@ -299,7 +317,7 @@ button:hover {
   .nav-list {
     list-style: none;
     padding-left: 0;
-    display: flex;
+    display: none;
     flex-direction: row;
     gap: 10px;
     position: absolute;

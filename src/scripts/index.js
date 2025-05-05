@@ -465,7 +465,7 @@ document.getElementById('data-form').onsubmit = function(event) {
     table.appendChild(thead);
     table.appendChild(tbody);
 
-    document.getElementById("clear-btn").click(); // clears display
+    document.getElementById('chart').innerHTML = ""; // clears display
     document.getElementById('chart').appendChild(table);
     waitForTableAndMakeSortable(table);
 }
