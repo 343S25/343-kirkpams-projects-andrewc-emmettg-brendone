@@ -110,16 +110,26 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("submit-graph-form").addEventListener('click', () => {
         document.getElementById("clear-btn").click(); // clears display
         const ctx = document.getElementById('myChart');
+
+        let info = pull_graph_data();
+        console.log(pull_graph_data());
+        let filtered = [];
+        let all_of_the_data = getData();
+        all_of_the_data.forEach(entry => {
+        if (entry.date <= info.end && entry.date >= info.start && (info.type == 'data-all' || info.type == entry.category.type)) {
+            filtered.push(entry);
+            }
+        });
+        all_of_the_data = filtered;
+
         let allLabels = [];
         let allNumData = [];
         let totalNumData = 0;
 
-        all_data = getData();
-        all_data.forEach((data) => {
+        all_of_the_data.forEach((data) => {
             allLabels.push(data['category']['type']);
              
             let temp = data['amount'].split(',');
-            temp = temp[0] + temp[1];
             totalNumData += parseFloat(temp);
             allNumData.push(temp);
         })
@@ -129,7 +139,11 @@ document.addEventListener("DOMContentLoaded", () => {
             numsOuttaHunnid.push(numdata/totalNumData);
         })
 
-        console.log(all_data);
+        console.log(all_of_the_data);
+
+        console.log(allLabels);
+        console.log(allNumData);
+        console.log(numsOuttaHunnid);
 
         new Chart(ctx, {
           type: 'doughnut',
@@ -263,7 +277,7 @@ function pull_graph_data() {
     }
     let start_date = document.getElementById('graph-start-date').value;
     let end_date = document.getElementById('graph-end-date').value;
-    return [graph, data, start_date, end_date]
+    return {type: graph, data: data, start: start_date, end: end_date}
 }
 
 // Pulls data information as a list object
