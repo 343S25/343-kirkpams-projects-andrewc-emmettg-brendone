@@ -10,10 +10,14 @@
 
 
 // All data, memory persists in localStorage
-let all_data = [];
-const stored_data = localStorage.getItem('data-entries');
-if (stored_data) {
-    all_data = JSON.parse(stored_data);
+
+function getData(){
+    let all_data = [];
+    const stored_data = localStorage.getItem('data-entries');
+    if (stored_data) {
+        all_data = JSON.parse(stored_data);
+    }
+    return all_data;
 }
 
 // Get modals
@@ -104,11 +108,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Generate Graph
     document.getElementById("submit-graph-form").addEventListener('click', () => {
+        document.getElementById("clear-btn").click(); // clears display
         const ctx = document.getElementById('myChart');
         let allLabels = [];
         let allNumData = [];
         let totalNumData = 0;
 
+        all_data = getData();
         all_data.forEach((data) => {
             allLabels.push(data['category']['type']);
              
@@ -141,60 +147,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 beginAtZero: true
               }}}});
     })
-});
-
-// Show Data
-document.getElementById("submit-data-form").addEventListener('click', () => { 
-    
-    const table = document.createElement('table');
-    const thead = document.createElement('thead');
-    const tbody = document.createElement('tbody');
-    
-    const headerRow = document.createElement('tr');
-    const th1 = document.createElement('th');
-    th1.textContent = 'Type';
-    headerRow.appendChild(th1);
-    const th2 = document.createElement('th');
-    th2.textContent = 'Subtype';
-    headerRow.appendChild(th2);
-    const th3 = document.createElement('th');
-    th3.textContent = 'Amount';
-    headerRow.appendChild(th3);
-    const th4 = document.createElement('th');
-    th4.textContent = 'Date';
-    headerRow.appendChild(th4);
-    const th5 = document.createElement('th');
-    th5.textContent = 'Notes';
-    headerRow.appendChild(th5);
-
-    thead.appendChild(headerRow);
-    
-    // Create table body
-    all_data.forEach(item => {
-        const row = document.createElement('tr');
-        const cell = document.createElement('td');
-        cell.textContent = item['category']['type'];
-        row.appendChild(cell);
-        tbody.appendChild(row);
-        
-    });
-
-    all_data.forEach(item => {
-        const row = document.createElement('tr');
-        const cell = document.createElement('td');
-        cell.textContent = item['category']['subtype'];
-        row.appendChild(cell);
-        tbody.appendChild(row);
-        
-    });
-
-
-
-    table.appendChild(thead);
-    table.appendChild(tbody);
-
-    // Append the table to the chart zone
-   document.getElementById("chart").appendChild(table);
 });
 
 // Show the hidden graph dropdown if needed
@@ -345,6 +297,7 @@ document.getElementById('btn-data-preview').addEventListener('click', () => {
         return;
     }
     let filtered = [];
+    all_data = getData();
     all_data.forEach(entry => {
         if (entry.date <= info.end && entry.date >= info.start && (info.type == 'data-all' || info.type == entry.category.type)) {
             filtered.push(entry);
@@ -367,7 +320,7 @@ document.getElementById('graph-form').onsubmit = function(event) {
         return;
     }
     const info = pull_graph_data();
-    document.getElementById('temp-content').innerHTML = `Will be a Graph of:<br>Graph Type Selected: ${info[0]}<br>Data Type Selected: ${info[1]}`;
+    // document.getElementById('temp-content').innerHTML = `Will be a Graph of:<br>Graph Type Selected: ${info[0]}<br>Data Type Selected: ${info[1]}`;
     console.log(`Graph Type Selected: ${info[0]}`);
     console.log(`Data Type Selected: ${info[1]}`);
     console.log(`Start Date: ${info[2]}`);
@@ -377,21 +330,146 @@ document.getElementById('graph-form').onsubmit = function(event) {
     graph_modal.style.display = 'none';
 }
 
+function makeTableSortable(table) {
+
+    if (!table) return;
+  
+    const headers = table.querySelectorAll('th');
+    let sortDirection = {};
+  
+    headers.forEach((header, index) => {
+      header.style.cursor = 'pointer';
+      header.addEventListener('click', () => {
+        const direction = sortDirection[index] === 'asc' ? 'desc' : 'asc';
+        sortDirection = {};
+        sortDirection[index] = direction;
+  
+        // Clean up sort indicators
+        headers.forEach(h => h.textContent = h.textContent.replace(/[\u25B2\u25BC]/g, '').trim());
+        header.textContent += direction === 'asc' ? ' ▲' : ' ▼';
+  
+        sortTableByColumn(table, index, direction === 'asc');
+      });
+    });
+  
+    function sortTableByColumn(table, columnIndex, asc = true) {
+      const tbody = table.querySelector('tbody');
+      const rows = Array.from(tbody.querySelectorAll('tr'));
+  
+      rows.sort((a, b) => {
+        const valA = a.children[columnIndex].textContent.trim();
+        const valB = b.children[columnIndex].textContent.trim();
+  
+        const parsedA = isNaN(valA) ? valA.toLowerCase() : parseFloat(valA);
+        const parsedB = isNaN(valB) ? valB.toLowerCase() : parseFloat(valB);
+  
+        return asc ? (parsedA > parsedB ? 1 : -1) : (parsedA < parsedB ? 1 : -1);
+      });
+  
+      rows.forEach(row => tbody.appendChild(row));
+    }
+  }
+  
+  function waitForTableAndMakeSortable(table, interval = 200, timeout = 5000) {
+    const startTime = Date.now();
+    const timer = setInterval(() => {
+      if (table) {
+        clearInterval(timer);
+        makeTableSortable(table);
+      } else if (Date.now() - startTime > timeout) {
+        clearInterval(timer);
+        console.warn(`Table with ID "${table.id}" not found in time.`);
+      }
+    }, interval);
+  }
+
 // Handle data form submission (to generate a table based on selected data type and time)
 document.getElementById('data-form').onsubmit = function(event) {
     event.preventDefault();
-    const start = document.getElementById('data-start-date').value;
-    const end = document.getElementById('data-end-date').value;
-    if ((start && end) && (start > end || end < start)) {
+    const info = pull_data_data();
+    if ((info.start && info.end) && (info.start > info.end || info.end < info.start)) {
         alert('Invalid date range: Start date must precede end date.');
         return;
     }
-    const info = pull_data_data();
-    document.getElementById('temp-content').innerHTML = `Will be the Data display of:<br>Data Type Selected: ${info[0]}<br>Over Time From ${info[1]} to ${info[2]}`;
-    console.log(`Data Type Selected: ${info[0]}`);
-    console.log(`Start Date: ${info[1]}`);
-    console.log(`End Date: ${info[2]}`);
+    let filtered = [];
+    all_data = getData();
+    all_data.forEach(entry => {
+        if (entry.date <= info.end && entry.date >= info.start && (info.type == 'data-all' || info.type == entry.category.type)) {
+            filtered.push(entry);
+        }
+    });
+
+    // document.getElementById('temp-content').innerHTML = `Will be the Data display of:<br>Data Type Selected: ${info.type}<br>Over Time From ${info.start} to ${info.end}`;
+    console.log(`Data Type Selected: ${info.type}`);
+    console.log(`Start Date: ${info.start}`);
+    console.log(`End Date: ${info.end}`);
     data_modal.style.display = 'none';
+
+    // Dynamically create the data display table in the display area
+    const table = document.createElement('table');
+    table.classList.add('styled-table');
+    const thead = document.createElement('thead');
+    const tbody = document.createElement('tbody');
+    
+    const headerRow = document.createElement('tr');
+    const th1 = document.createElement('th');
+    th1.textContent = 'Type';
+    headerRow.appendChild(th1);
+    const th2 = document.createElement('th');
+    th2.textContent = 'Subtype';
+    headerRow.appendChild(th2);
+    const th3 = document.createElement('th');
+    th3.textContent = 'Amount';
+    headerRow.appendChild(th3);
+    const th4 = document.createElement('th');
+    th4.textContent = 'Date';
+    headerRow.appendChild(th4);
+    const th5 = document.createElement('th');
+    th5.textContent = "Notes"
+    headerRow.appendChild(th5);
+    thead.appendChild(headerRow);
+
+    filtered.forEach (entry => {
+        const row = document.createElement('tr');
+
+        const tdType = document.createElement('td');
+        tdType.textContent = entry.category.type;
+        row.appendChild(tdType);
+
+        const tdSubtype = document.createElement('td');
+        tdSubtype.textContent = entry.category.subtype;
+        row.appendChild(tdSubtype);
+
+        const tdAmount = document.createElement('td');
+        tdAmount.textContent = entry.amount;
+        row.appendChild(tdAmount);
+
+        const tdDate = document.createElement('td');
+        tdDate.textContent = entry.date;
+        row.appendChild(tdDate);
+
+        const tdNotes = document.createElement('td');
+        tdNotes.textContent = entry.notes;
+        row.appendChild(tdNotes);
+
+        tbody.appendChild(row);
+    });
+
+    if (filtered.length < 1) {
+        const row = document.createElement('tr');
+        const td = document.createElement('td');
+        td.textContent = "No entries found."
+        td.colSpan = 5;
+        row.appendChild(td);
+        tbody.appendChild(row);
+    }
+
+    table.appendChild(thead);
+    table.appendChild(tbody);
+
+    document.getElementById("clear-btn").click(); // clears display
+    document.getElementById('chart').appendChild(table);
+    waitForTableAndMakeSortable(table);
 }
 ///////////////////////////////
 // Show the current GDP Data//
@@ -433,6 +511,7 @@ document.getElementById('entry-form').onsubmit = function(event) {
         date: document.getElementById('entry-date').value, 
         notes: document.getElementById('notes').value || "No notes."
     };
+    all_data = getData();
     all_data.push(new_data);
     localStorage.setItem('data-entries', JSON.stringify(all_data));
     console.log('Added some new data:');

@@ -105,6 +105,35 @@ body, html, pre {
   border: 1px solid #ccc;
 }
 
+/* Table styles */
+.styled-table {
+  width: 90%;
+  margin: 0 auto;
+  padding: 5%;
+  border-collapse: collapse;
+}
+
+/* Table header */
+.styled-table thead {
+  background-color: #f2f2f2;
+}
+
+.styled-table th, .styled-table td {
+  border: 1px solid #ddd; /* Adds lines between table cells */
+  padding: 10px;
+  text-align: center; /* Centers the text inside table cells */
+}
+
+/* Even rows */
+.styled-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+/* Hover effect for rows */
+.styled-table tr:hover {
+  background-color: #f1f1f1;
+}
+
 #info {
   width: 100%;
   height: 200px;
