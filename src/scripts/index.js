@@ -347,6 +347,7 @@ function pull_data_data() {
     return {type: data, start: start_date, end: end_date}
 }
 
+
 // Load graph into preview display
 document.getElementById('btn-graph-preview').addEventListener('click', () => {
     const start = document.getElementById('graph-start-date').value;
