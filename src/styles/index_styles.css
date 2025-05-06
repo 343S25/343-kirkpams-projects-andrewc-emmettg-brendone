@@ -13,6 +13,9 @@
 body, html, pre {
   height: 100%;
   font-family: Arial, sans-serif;
+  font-size: var(--font-size);
+  background-color: var(--bg-color); /* Background color for light/dark mode */
+  color: var(--text-color); /* Text color for light/dark mode */
 }
 
 /* Main container is vertical */
@@ -24,7 +27,7 @@ body, html, pre {
 
 /* Title spans across the top */
 .header {
-  background-color: #34495e;
+  background-color: var(--header-bg); /* Dynamically set header background */
   color: white;
   padding: 20px;
   font-size: 1.5em;
@@ -39,7 +42,7 @@ body, html, pre {
 
 /* Sidebar fixed width on left */
 .sidebar {
-  background-color: #2c3e50;
+  background-color: var(--sidebar-bg); /* Dynamically set sidebar background */
   color: white;
   padding: 20px;
   width: 200px;
@@ -68,7 +71,7 @@ body, html, pre {
 .nav-list button {
   width: 100%;
   padding: 12px 0;
-  background-color: #34495e;
+  background-color: var(--header-bg); /* Use dynamic header color */
   color: white;
   border: none;
   border-radius: 4px;
@@ -79,14 +82,14 @@ body, html, pre {
 }
 
 .nav-list button:hover {
-  background-color: #3d5a73;
+  background-color: var(--hover-bg); /* Dynamically adjust hover color */
 }
 
 /* Main content area takes remaining space right */
 .main {
   flex: 1;
   padding: 20px;
-  background-color: #ecf0f1;
+  background-color: var(--card-bg); /* Dynamically set card background */
 }
 
 #display-title {
@@ -101,21 +104,34 @@ body, html, pre {
 #chart {
   width: 100%;
   height: 400px;
-  background-color: white;
+  background-color: var(--card-bg); /* Dynamic background for chart */
   border: 1px solid #ccc;
+  margin: 2% auto;
+  overflow-y: auto;
+  box-sizing: border-box;
 }
 
 /* Table styles */
 .styled-table {
-  width: 90%;
-  margin: 0 auto;
-  padding: 5%;
+  margin: 2% auto;
   border-collapse: collapse;
+  width: 96%;
+  max-width: 96%;
+  height: 96%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 10px;
+  box-sizing: border-box;
+  background-color: var(--table-bg); /* Dynamic table background */
 }
 
 /* Table header */
 .styled-table thead {
-  background-color: #f2f2f2;
+  background-color: var(--table-header-bg); /* Dynamic header background for table */
+  position: sticky;
+  top: 0;
+  z-index: 2; /* Ensure it stays on top of other content */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Add subtle shadow to give the sticky effect */
 }
 
 .styled-table th, .styled-table td {
@@ -124,20 +140,30 @@ body, html, pre {
   text-align: center; /* Centers the text inside table cells */
 }
 
+/* Sticky table header */
+.styled-table thead th {
+  position: sticky;
+  top: 0;
+  background-color: var(--card-bg); /* Important: visible background for sticky */
+  z-index: 2; /* Ensures it stays on top */
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
 /* Even rows */
 .styled-table tr:nth-child(even) {
-  background-color: #f9f9f9;
+  background-color: var(--table-row-even-bg); /* Dynamic even row color */
 }
 
 /* Hover effect for rows */
 .styled-table tr:hover {
-  background-color: #f1f1f1;
+  background-color: var(--table-row-hover-bg); /* Dynamic hover row color */
 }
 
 #info {
   width: 100%;
   height: 200px;
-  background-color: white;
+  background-color: var(--card-bg); /* Dynamic card background */
   border: 1px solid #ccc;
 }
 
@@ -151,34 +177,57 @@ body, html, pre {
 .modal {
   display: none; /* Hidden by default */
   position: fixed;
-  z-index: 1; /* Keep at top */
+  z-index: 2; /* Keep the modal on top of the content */
   left: 0;
   top: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0,0,0,0.4);
-}
-
-#moreinfo {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  font-size: 16px;
-  line-height: 1.6;
-  color: #333;
-  background-color: #f9f9f9;
-  padding: 15px;
-  border-radius: 8px;
-  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+  background-color: rgba(0, 0, 0, 0.4); /* Dark semi-transparent background */
+  backdrop-filter: blur(5px); /* Optional: adds blur effect to content behind the modal */
 }
 
 /* Modal content */
 .modal-content {
-  background-color: white;
-  margin: 15% auto;
+  background-color: var(--card-bg);
+  margin: 5% auto;
   padding: 20px;
   border: 1px solid #888;
   width: 80%; /* Can adjust the width */
   max-width: 600px; /* Maximum width */
+  max-height: 85vh;
   position: relative;
+  z-index: 3; /* Keep modal content above the darkened background */
+}
+
+.modal-content-area {
+  position: relative;
+  bottom: 5px;
+  height: 100px;
+  background-color: var(--bg-color); /* Keep the light/dark mode background */
+  border: 1px solid #ccc;
+  margin-top: 20px;
+}
+
+.modal-text-area {
+  width: 100%;
+  max-width: 100%;
+  height: 100%;
+  max-height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+#moreinfo {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: var(--font-size);
+  line-height: 1.6;
+  color: var(--text-color); /* Dynamic text color */
+  background-color: var(--card-bg); /* Dynamic card background */
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* Close button */
@@ -225,7 +274,7 @@ form {
 
 select, input[type="date"], input[type="text"], #notes {
   padding: 8px;
-  font-size: 1em;
+  font-size: var(--font-size);
   font-family: Arial, sans-serif;
   width: 100%;
   max-width: 200px;
@@ -234,8 +283,8 @@ select, input[type="date"], input[type="text"], #notes {
 
 button {
   padding: 10px 15px;
-  font-size: 1em;
-  background-color: #34495e;
+  font-size: var(--font-size);
+  background-color: var(--theme-color); /* Dynamically set theme color */
   color: white;
   border: none;
   border-radius: 4px;
@@ -246,26 +295,13 @@ button {
 }
 
 button:hover {
-  background-color: #3d5a73;
+  background-color: var(--hover-bg); /* Hover effect with dynamic color */
 }
 
-.modal-content-area {
-  height: 400px;
-  background-color: #ecf0f1;
-  border: 1px solid #ccc;
-  margin-top: 20px;
-}
-
-/*                                             *\
-/*                                             *\
-/*  Awesome smaller screen size layouts below  *\
-/*                                             *\
-/*                                             */
-
-
+/* Mobile Layouts */
 @media only screen and (max-width: 900px) {
   .sidebar {
-    background-color: #2c3e50;
+    background-color: var(--sidebar-bg); /* Dynamic sidebar color */
     color: white;
     padding: 20px;
     height: 50px;
@@ -281,14 +317,13 @@ button:hover {
     display: inherit;
     align-items: center;
   }
-  
+
   .nav-list {
     list-style: none;
     padding-left: 0;
-    display: flex;
+    display: none;
     flex-direction: row;
     gap: 10px;
-    display: none;
     position: absolute;
     bottom: 60px;
     left: 70px;
@@ -297,7 +332,7 @@ button:hover {
     max-height: 60vh;
     overflow-y: scroll;      /* Always show scrollbar */
     scrollbar-width: auto;   /* For Firefox */
-    background-color: #2c3e50;
+    background-color: var(--sidebar-bg); /* Dynamic sidebar background */
     padding: 10px;
     border-radius: 8px;
   }
@@ -310,86 +345,25 @@ button:hover {
     display: none;
   }
 
-  .sidebar:hover .nav-list{
+  .sidebar:hover .nav-list {
     display: block;
   }
-  
+
   .nav-list button {
     width: 100vw;
     padding: 6px 0;
     padding-left: 40vw;
     padding-right: 45vw;
-    background-color: #50759b;
+    background-color: var(--theme-color);
     color: white;
     border: none;
     border-radius: 4px;
     font-size: 1em;
     cursor: pointer;
     transition: background-color 0.2s ease;
-    
   }
-  
+
   .nav-list button:hover {
-    background-color: #3d5a73;
+    background-color: var(--hover-bg);
   }
-  .data-container {
-    font-family: Arial, sans-serif;
-    margin: 20px;
-    padding: 15px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    background-color: #f9f9f9;
-}
-
-.data-container h3 {
-    font-size: 1.5em;
-    color: #333;
-    margin-bottom: 10px;
-}
-
-.data-item {
-    background-color: #fff;
-    margin-bottom: 10px;
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #eee;
-}
-
-.data-item p {
-    margin: 5px 0;
-}
-
-.no-data {
-    background-color: #ffe6e6;
-    padding: 15px;
-    border: 1px solid #ff9999;
-    border-radius: 8px;
-    color: #d9534f;
-}
-
-.no-data h3 {
-    color: #d9534f;
-    font-size: 1.25em;
-}
-
-.error {
-    background-color: #f2dede;
-    padding: 15px;
-    border: 1px solid #ebccd1;
-    border-radius: 8px;
-    color: #a94442;
-}
-
-.error h3 {
-    color: #a94442;
-    font-size: 1.25em;
-}
-
-#data-preview {
-  max-height: 500px;        
-  overflow-y: auto;        
-  height: auto;             
-  transition: 0.3s ease;
-  
-}
 }

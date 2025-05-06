@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="authors" content="Andrew Cramer, ">
+    <title>Settings</title>
+    <link rel="stylesheet" href="styles/settings.css">
+</head>
+<body>
+
+    <h1>Settings</h1>
+
+    <!-- Color Picker -->
+    <div class="setting">
+      <label for="themeColor">Theme Color:</label>
+      <input type="color" id="themeColor" name="themeColor" value="#3498db">
+    </div>
+
+    <!-- Dark Mode Toggle -->
+    <div class="setting">
+      <label>
+        <input type="checkbox" id="darkMode" name="darkMode">
+        Enable Dark Mode
+      </label>
+    </div>
+
+    <!-- Buttons -->
+    <div class="setting">
+      <button type="button" id="btn-save-settings">Save Settings</button>
+      <button type="button" id="btn-reset-settings">Reset Settings</button>
+    </div>
+
+    <div class="setting">
+        <button type="button" id="btn-reset-data">Reset All Data</button>
+    </div>
+
+    <div class="setting">
+        <button type="submit" id="btn-home">Home</button>
+    </div>
+    <script src="scripts/settings.js"></script>
+  </body>
+  </html>

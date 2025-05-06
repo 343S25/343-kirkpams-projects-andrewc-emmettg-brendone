@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta name="authors" content="Andrew Cramer, ">
     <title>Personal Budget Visualizer</title>
+    <link rel="stylesheet" href="styles/settings.css">
     <link rel="stylesheet" href="styles/index_styles.css">
 </head>
 <body>
@@ -22,7 +23,7 @@
                     <li><button type="button" id="btn-add-entry">Add Entry</button></li>
                     <li><button type="button" id="btn-import">Import</button></li>
                     <li><button type="button" id="btn-export">Export</button></li>
-                    <li><button type="button" id="btn-settings">Settings</button></li>
+                    <li><button type="submit" id="btn-settings">Settings</button></li>
                     <li><button type="submit" id="gdpButton">Get GDP Data</button></li>
                     <li><button type="submit" id="cpiButton">Get CPI Data </button></li>
                     <li><button type="submit" id="pceButton">Get PCE Data</button></li>
@@ -34,7 +35,7 @@
                 <div class="content">
                     <!-- Chart should be embedded here -->
                     <h3 id="display-title">Display Area</h3>
-                    <button id="clear-btn">Clear Display</button>
+                    <button type="button" id="clear-btn">Clear Display</button>
                     <div id="chart">
                         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
                         <canvas id="myChart"></canvas>
@@ -88,7 +89,7 @@
             </form>
             <div id="graph-area" class="modal-content-area">
                 <!-- Graph/Chart content will go here -->
-                <p id="graph-preview">Preview Graph content goes here.</p>
+                <p id="graph-preview" class="modal-text-area">Preview Graph content goes here.</p>
             </div>
         </div>
     </div>
@@ -131,7 +132,7 @@
             </form>
             <div id="data-area" class="modal-content-area">
                 <!-- Data content will go here -->
-                <p id="data-preview">Preview Data content goes here.</p>
+                <p id="data-preview" class="modal-text-area">Preview Data content goes here.</p>
             </div>
         </div>
     </div>
