@@ -162,6 +162,19 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById('chart').innerHTML = '<script src="https://cdn.jsdelivr.net/npm/chart.js"></script><canvas id="myChart"></canvas>';
     });
 
+    // This is an awesome date comparing method.
+    function dateComparison(start, end, culprit) {
+        const startDate = new Date(start);
+        const endDate = new Date(end);
+        const culpritDate = new Date(culprit);
+
+        if (culpritDate >= startDate && culpritDate <= endDate) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     // Generate Graph
     document.getElementById("submit-graph-form").addEventListener('click', () => {
         document.getElementById("clear-btn").click(); // clears display
@@ -172,8 +185,9 @@ document.addEventListener("DOMContentLoaded", () => {
         let filtered = [];
         let all_of_the_data = getData();
         all_of_the_data.forEach(entry => {
-        if (entry.date <= info.end && entry.date >= info.start && (info.type == 'data-all' || info.type == entry.category.type)) {
-            filtered.push(entry);
+            console.log(entry)
+            if (dateComparison(info['start'], info['end'], entry['date'])){
+                filtered.push(entry);
             }
         });
         all_of_the_data = filtered;
@@ -182,11 +196,10 @@ document.addEventListener("DOMContentLoaded", () => {
         let allNumData = [];
         let totalNumData = 0;
 
-        all_of_the_data.forEach((data) => {
+        filtered.forEach((data) => {
             allLabels.push(data['category']['type']);
-             
-            let temp = data['amount'].split(',');
-            totalNumData += parseFloat(temp);
+            let temp = parseFloat(data['amount'].replace(/,/g, ''));
+            totalNumData += temp;
             allNumData.push(temp);
         })
 
