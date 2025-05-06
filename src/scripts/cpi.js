@@ -4,15 +4,6 @@
  * Author(s): Andrew Cramer, 
  */
 
-/**
- *   TODO88  dP"Yb   I888b.   dP"Yb     - do fetch() somewhere
- *     I8   dP   Yb  I8  Yb  dP   Yb    - create at least a second HTML page for some capability (could be for add-entry | import | export | settings)
- *     I8   8     8  I8   8  8     8    - Fill out HTML Project Report Page HTML (MAYBE? need to make accessible from index.html?)
- *     I8   Yb   dP  I8  dP  Yb   dP    - Include and image somewhere (saved to images file), with alt text
- *     I8    YbodP   I888P'   YbodP     - Format all paragraphs in a serifed font (titles remain in sans-serif)
- *                                      - Include link(s) to external site(s) somewhere
- *                                      - !Significantly less important! Properly format and sort styling in css files
- */
 function loadSettings() {
     const saved = JSON.parse(localStorage.getItem("userSettings"));
     
@@ -279,30 +270,41 @@ document.getElementById('data-form').onsubmit = function (event) {
     console.log(`End Date: ${info[2]}`);
     data_modal.style.display = 'none';
 }
+
 ///////////////////////////////
-//////// Navigation Menu //////
+// Show the current GDP Data//
 //////////////////////////////
 const homeData = document.getElementById('homeButton');
-homeData.addEventListener('click', () => {
-    window.location.href = "index.html";
-});
+if (homeData) {
+    homeData.addEventListener('click', () => {
+        window.location.href = "index.html";
+    });
+}
 
 const gdpData = document.getElementById('gdpButton');
-gdpData.addEventListener('click', () => {
-    window.location.href = "gdp.html";
-});
+if (gdpData) {
+    gdpData.addEventListener('click', () => {
+        window.location.href = "gdp.html";
+    });
+}
 
 const cpiData = document.getElementById('cpiButton');
-cpiData.addEventListener('click', () => {
-    window.location.href = "cpi.html";
-});
+if (cpiData) {
+    cpiData.addEventListener('click', () => {
+        window.location.href = "cpi.html";
+    });
+}
 
 const pceData = document.getElementById('pceButton');
-pceData.addEventListener('click', () => {
-    window.location.href = "usd.html";
-});
+if (pceData) {
+    pceData.addEventListener('click', () => {
+        window.location.href = "usd.html";
+    });
+}
 
 const fedData = document.getElementById('fedButton');
-fedData.addEventListener('click', () => {
-    window.location.href = "fed.html";
-});
+if (fedData) {
+    fedData.addEventListener('click', () => {
+        window.location.href = "fed.html";
+    });
+}

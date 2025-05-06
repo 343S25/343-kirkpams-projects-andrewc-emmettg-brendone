@@ -1,0 +1,53 @@
+/*
+  CSS for table display.
+
+  Author(s): Andrew Cramer
+*/
+
+/* Table styles */
+.styled-table {
+    margin: 2% auto;
+    border-collapse: collapse;
+    width: 96%;
+    max-width: 96%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 10px;
+    box-sizing: border-box;
+    background-color: var(--table-bg); /* Dynamic table background */
+  }
+  
+  /* Table header */
+  .styled-table thead {
+    background-color: var(--table-header-bg); /* Dynamic header background for table */
+    position: sticky;
+    top: 0;
+    z-index: 2; /* Ensure it stays on top of other content */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Add subtle shadow to give the sticky effect */
+  }
+  
+  .styled-table th, .styled-table td {
+    border: 1px solid #ddd; /* Adds lines between table cells */
+    padding: 10px;
+    text-align: center; /* Centers the text inside table cells */
+  }
+  
+  /* Sticky table header */
+  .styled-table thead th {
+    position: sticky;
+    top: 0;
+    background-color: var(--card-bg); /* Important: visible background for sticky */
+    z-index: 2; /* Ensures it stays on top */
+    padding: 10px;
+    border: 1px solid #ddd;
+  }
+  
+  /* Even rows */
+  .styled-table tr:nth-child(even) {
+    background-color: var(--table-row-even-bg); /* Dynamic even row color */
+  }
+  
+  /* Hover effect for rows */
+  .styled-table tr:hover {
+    background-color: var(--table-row-hover-bg); /* Dynamic hover row color */
+  }
