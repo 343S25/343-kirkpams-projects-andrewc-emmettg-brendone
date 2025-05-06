@@ -22,7 +22,8 @@ body, html, pre {
 .container {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 100%;
+  width: 100%;
 }
 
 /* Title spans across the top */
@@ -117,7 +118,6 @@ body, html, pre {
   border-collapse: collapse;
   width: 96%;
   max-width: 96%;
-  height: 96%;
   overflow-y: auto;
   overflow-x: hidden;
   padding: 10px;

@@ -4,14 +4,7 @@
  * Author(s): Andrew Cramer, 
  */
 
-// TODO Andrew will refactor the index.js once all funcitonality works.
-//      - modals will have their own scripts.
-//      - make the comments and formatting cleaner
-
-
-// All data, memory persists in localStorage
-
-function getData(){
+function getData() {
     let all_data = [];
     const stored_data = localStorage.getItem('data-entries');
     if (stored_data) {
@@ -126,7 +119,15 @@ window.onclick = function(event) {
 
 // Dynamically generate inner subtypes for list
 document.addEventListener("DOMContentLoaded", () => {
-    // Subtypes for each type, their values will be lowercase with '-' replacing ' '.
+    // Set entry date to today
+    const entryDateInput = document.getElementById('entry-date');
+    if (entryDateInput) {
+        const today = new Date();
+        today.setDate(today.getDate());
+        entryDateInput.value = formatDate(today);
+    }
+
+    // Dynamically generates inner-subtypes for lists:
     const typeToSubtypes = {
         food: ["Groceries", "Dining Out", "Fast Food"],
         transport: ["Gas", "Public Transit", "Car Maintenance", "Ride Share"],
@@ -135,7 +136,7 @@ document.addEventListener("DOMContentLoaded", () => {
         entertainment: ["Streaming", "Games", "Events", "Hobbies"],
         income: ["Salary", "Investments", "Other Income"],
         other: ["Miscellaneous", "One-time", "Uncategorized"]
-    };
+    }; // Subtypes above are listed for each type, their values will be lowercase with '-' replacing ' '.
 
     const typeSelect = document.getElementById("entry-type");
     const subtypeSelect = document.getElementById("entry-subtype");
@@ -144,14 +145,13 @@ document.addEventListener("DOMContentLoaded", () => {
         subtypeSelect.innerHTML = ""; // Clears existing options
         typeToSubtypes[selectedType].forEach(subtype => {
             const option = document.createElement("option");
-            option.value = subtype.toLowerCase().replace(/ /g, "-");
+            option.value = subtype.toLowerCase().replace(/ /g, "-"); // Replacing spaces with -, making lowercase.
             option.textContent = subtype;
             subtypeSelect.appendChild(option);
         });
     }
 
     updateSubtypes(typeSelect.value);
-
     // Update subtypes on type change
     typeSelect.addEventListener("change", () => {
         updateSubtypes(typeSelect.value);
@@ -264,48 +264,6 @@ function setDefaultDateRange(startId, endId, daysBack = 30) {
 setDefaultDateRange('graph-start-date', 'graph-end-date');
 setDefaultDateRange('data-start-date', 'data-end-date');
 
-// Set default entry date to today
-document.addEventListener('DOMContentLoaded', () => {
-    const entryDateInput = document.getElementById('entry-date');
-    if (entryDateInput) {
-        const today = new Date();
-        today.setDate(today.getDate());
-        entryDateInput.value = formatDate(today);
-    }
-
-    //Dynamically generates inner-subtypes for lists:
-    const typeToSubtypes = {
-        food: ["Groceries", "Dining Out", "Fast Food"],
-        transport: ["Gas", "Public Transit", "Car Maintenance", "Ride Share"],
-        living: ["Rent", "Mortgage", "Furnishings", "Home Supplies"],
-        bills: ["Electric", "Water", "Internet", "Phone", "Insurance"],
-        entertainment: ["Streaming", "Games", "Events", "Hobbies"],
-        income: ["Salary", "Investments", "Other Income"],
-        other: ["Miscellaneous", "One-time", "Uncategorized"]
-    };
-    // Subtypes above are listed for each type, their values will be lowercase with '-' replacing ' '.
-
-    const typeSelect = document.getElementById("entry-type");
-    const subtypeSelect = document.getElementById("entry-subtype");
-
-    function updateSubtypes(selectedType) {
-        subtypeSelect.innerHTML = ""; // Clears existing options
-        typeToSubtypes[selectedType].forEach(subtype => {
-            const option = document.createElement("option");
-            option.value = subtype.toLowerCase().replace(/ /g, "-"); // Replacing spaces with -, making lowercase.
-            option.textContent = subtype;
-            subtypeSelect.appendChild(option);
-        });
-    }
-    
-    updateSubtypes(typeSelect.value);
-
-    // Update subtypes on type change
-    typeSelect.addEventListener("change", () => {
-        updateSubtypes(typeSelect.value);
-    });
-});
-
 // Prevent submission if dates invalid
 function syncDatePickers(startInput, endInput) {
     const start = document.getElementById(startInput);
@@ -350,14 +308,12 @@ function pull_data_data() {
 
 // Load graph into preview display
 document.getElementById('btn-graph-preview').addEventListener('click', () => {
-    const start = document.getElementById('graph-start-date').value;
-    const end = document.getElementById('graph-end-date').value;
-    if ((start && end) && (start > end || end < start)) {
+    const info = pull_graph_data();
+    if ((info.start && info.end) && (info.start > info.end || info.end < info.start)) {
         document.getElementById('graph-preview').textContent = 'Invalid date range: Start date must precede end date.';
         return;
     }
-    let info = pull_graph_data();
-    document.getElementById('graph-preview').innerHTML = `Will be a Graph of:<br>Graph Type Selected: ${info[0]}<br>Data Type Selected: ${info[1]}<br>Over Time From ${info[2]} to ${info[3]}`;
+    document.getElementById('graph-preview').innerHTML = `Will be a Graph of:<br>Graph Type Selected: ${info.type}<br>Data Type Selected: ${info.data}<br>Over Time From ${info.start} to ${info.end}`;
 });
 
 // Load data into preview display
@@ -386,20 +342,15 @@ document.getElementById('btn-data-preview').addEventListener('click', () => {
 // Handle graph form submission (to generate a graph based on selected graph type, data type, and time)
 document.getElementById('graph-form').onsubmit = function(event) {
     event.preventDefault();
-    const start = document.getElementById('graph-start-date').value;
-    const end = document.getElementById('graph-end-date').value;
-    if ((start && end) && (start > end || end < start)) {
+    const info = pull_graph_data();
+    if ((info.start && info.end) && (info.start > info.end || info.end < info.start)) {
         alert('Invalid date range: Start date must precede end date.');
         return;
     }
-    const info = pull_graph_data();
-    // document.getElementById('temp-content').innerHTML = `Will be a Graph of:<br>Graph Type Selected: ${info[0]}<br>Data Type Selected: ${info[1]}`;
-    console.log(`Graph Type Selected: ${info[0]}`);
-    console.log(`Data Type Selected: ${info[1]}`);
-    console.log(`Start Date: ${info[2]}`);
-    console.log(`End Date: ${info[3]}`);
-    // TODO add functionality to dynamically generate a graph
-    // Research using Chart.js or another graphing library
+    console.log(`Graph Type Selected: ${info.type}`);
+    console.log(`Data Type Selected: ${info.data}`);
+    console.log(`Start Date: ${info.start}`);
+    console.log(`End Date: ${info.end}`);
     graph_modal.style.display = 'none';
 }
 
@@ -630,5 +581,4 @@ if (amountInput) {
     document.getElementById('entry-form').addEventListener('submit', function () {
         amountInput.value = amountInput.value.replace(/,/g, '');
     });
-
 }
