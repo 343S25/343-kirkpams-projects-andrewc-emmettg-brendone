@@ -174,62 +174,6 @@ document.addEventListener("DOMContentLoaded", () => {
             return false;
         }
     }
-
-    // Generate Graph
-    document.getElementById("submit-graph-form").addEventListener('click', () => {
-        document.getElementById("clear-btn").click(); // clears display
-        const ctx = document.getElementById('myChart');
-
-        let info = pull_graph_data();
-        console.log(pull_graph_data());
-        let filtered = [];
-        let all_of_the_data = getData();
-        all_of_the_data.forEach(entry => {
-            console.log(entry)
-            if (dateComparison(info['start'], info['end'], entry['date'])){
-                filtered.push(entry);
-            }
-        });
-        all_of_the_data = filtered;
-
-        let allLabels = [];
-        let allNumData = [];
-        let totalNumData = 0;
-
-        filtered.forEach((data) => {
-            allLabels.push(data['category']['type']);
-            let temp = parseFloat(data['amount'].replace(/,/g, ''));
-            totalNumData += temp;
-            allNumData.push(temp);
-        })
-
-        let numsOuttaHunnid = []
-        allNumData.forEach((numdata) => {
-            numsOuttaHunnid.push(numdata/totalNumData);
-        })
-
-        console.log(all_of_the_data);
-
-        console.log(allLabels);
-        console.log(allNumData);
-        console.log(numsOuttaHunnid);
-
-        new Chart(ctx, {
-          type: 'doughnut',
-          data: {
-            labels: allLabels,
-            datasets: [{
-              label: '# of Total Expendatures',
-              data: numsOuttaHunnid,
-              borderWidth: 1
-            }]
-          },
-          options: {
-            scales: {
-              y: {
-                beginAtZero: true
-              }}}});
-    })
 });
 
 // Show the hidden graph dropdown if needed
@@ -242,6 +186,7 @@ dataSelect.addEventListener('change', () => {
         typeSelectGroup.style.display = 'none';
     }
 });
+if (dataSelect.value == 'data-type') typeSelectGroup.style.display = 'flex';
 
 // Show the hidden data dropdown if needed
 const ddataSelect = document.getElementById('data-data-select');
@@ -309,7 +254,7 @@ function pull_graph_data() {
 
 // Pulls data information as a list object
 function pull_data_data() {
-    let data = document.getElementById('data-data-select').value; // functions as above
+    let data = document.getElementById('data-data-select').value; // Functions as above
     if (data == 'data-type') {
         data = document.getElementById('data-entry-type').value;
     }
@@ -321,19 +266,40 @@ function pull_data_data() {
 
 // Load graph into preview display
 document.getElementById('btn-graph-preview').addEventListener('click', () => {
+    const all_data = getData();
     const info = pull_graph_data();
+    const prev = document.getElementById('graph-preview');
+    // Checking to see if specified data/time range contains any entries
     if ((info.start && info.end) && (info.start > info.end || info.end < info.start)) {
-        document.getElementById('graph-preview').textContent = 'Invalid date range: Start date must precede end date.';
-        return;
+        prev.textContent = 'Invalid date range: Start date must precede end date.';
+    } else {
+        // No data at all
+        if (all_data.length < 1) {
+            prev.innerHTML = 'No data entries found for this graph.';
+        // Checking if there is data for specified type
+        } else if (info.data != 'data-all') {
+            let dateFiltered = [];
+            all_data.forEach(entry => {
+                if (entry.date >= info.start && entry.date <= info.end) {
+                    dateFiltered.push(entry);
+                }
+            });
+            // Checking for at least one entry in the specified time with the specified type
+            if (dateFiltered.some(entry => { return entry.category.type == info.data })) {
+                prev.innerHTML = `Will be a Graph of:<br>Graph Type Selected: ${info.type}<br>Data Type Selected: ${info.data}<br>Over Time From ${info.start} to ${info.end}`;
+            } else {
+                prev.innerHTML = 'No data entries found for this graph.';
+            }
+        } else {
+            prev.innerHTML = `Will be a Graph of:<br>Graph Type Selected: ${info.type}<br>Data Type Selected: ${info.data}<br>Over Time From ${info.start} to ${info.end}`;
+        }
     }
-    document.getElementById('graph-preview').innerHTML = `Will be a Graph of:<br>Graph Type Selected: ${info.type}<br>Data Type Selected: ${info.data}<br>Over Time From ${info.start} to ${info.end}`;
 });
 
 // Load data into preview display
 document.getElementById('btn-data-preview').addEventListener('click', () => {
     const data_preview = document.getElementById('data-preview');
     let info = pull_data_data();
-    console.log(info);
     if ((info.start && info.end) && (info.start > info.end || info.end < info.start)) {
         data_preview.textContent = 'Invalid date range: Start date must precede end date.';
         return;
@@ -354,16 +320,77 @@ document.getElementById('btn-data-preview').addEventListener('click', () => {
 
 // Handle graph form submission (to generate a graph based on selected graph type, data type, and time)
 document.getElementById('graph-form').onsubmit = function(event) {
+    document.getElementById('clear-btn').click();
     event.preventDefault();
     const info = pull_graph_data();
     if ((info.start && info.end) && (info.start > info.end || info.end < info.start)) {
         alert('Invalid date range: Start date must precede end date.');
         return;
     }
-    console.log(`Graph Type Selected: ${info.type}`);
-    console.log(`Data Type Selected: ${info.data}`);
-    console.log(`Start Date: ${info.start}`);
-    console.log(`End Date: ${info.end}`);
+
+    // Filtering data by specified time
+    let dateFiltered = [];
+    all_data = getData();
+    all_data.forEach(entry => {
+        if (entry.date >= info.start && entry.date <= info.end) {
+            dateFiltered.push(entry);
+        }
+    });
+
+    // Arrays used to produce graph
+    let labels = [];
+    let numData = [];
+
+    if (info.data == 'data-all') { // all entries, combine like types
+        dateFiltered.forEach(entry => {
+            let i = labels.indexOf(entry.category.type);
+            if (i != -1) { // type found in labels/numData
+                numData[i] += parseFloat(entry.amount);
+            } else { // add type to labels/numData
+                labels.push(entry.category.type);
+                numData.push(parseFloat(entry.amount));
+            }
+        });
+    } else { // entrys of type, combine subtypes
+        dateFiltered.forEach(entry => {
+            if (entry.category.type == info.data) { // if proper type
+                let i = labels.indexOf(entry.category.subtype);
+                if (i != -1) { // subtype found in labels/numData
+                    numData[i] += parseFloat(entry.amount);
+                } else { // add subtype to labels/numData
+                    labels.push(entry.category.subtype);
+                    numData.push(parseFloat(entry.amount));
+                }
+            }
+        });
+    }
+
+    // Get sum of all values and fractionalize each component as %
+    const totalSum = numData.reduce((sum, cur) => sum + cur, 0);
+    let fracData = [];
+    numData.forEach(entry => { fracData.push(entry * 100 / totalSum) });
+
+    // Creating chart
+    const ctx = document.getElementById('myChart');
+    new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: '% of Expenditures',
+                data: fracData,
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
     graph_modal.style.display = 'none';
 }
 
@@ -432,10 +459,6 @@ document.getElementById('data-form').onsubmit = function(event) {
         }
     });
 
-    // document.getElementById('temp-content').innerHTML = `Will be the Data display of:<br>Data Type Selected: ${info.type}<br>Over Time From ${info.start} to ${info.end}`;
-    console.log(`Data Type Selected: ${info.type}`);
-    console.log(`Start Date: ${info.start}`);
-    console.log(`End Date: ${info.end}`);
     data_modal.style.display = 'none';
 
     // Dynamically create the data display table in the display area
@@ -573,8 +596,6 @@ document.getElementById('entry-form').onsubmit = function(event) {
     let all_data = getData();
     all_data.push(new_data);
     localStorage.setItem('data-entries', JSON.stringify(all_data));
-    console.log('Added some new data:');
-    console.log(new_data);
     entry_modal.style.display = 'none';
 };
 
