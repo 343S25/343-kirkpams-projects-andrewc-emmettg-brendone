@@ -27,12 +27,12 @@ function loadSettings() {
         // Generate and apply modified color variants
         const headerBg = darkenColor(baseColor, 20);  // Darken by 20%
         const sidebarBg = darkenColor(baseColor, 10); // Darken by 10%
-        const cardBg = lightenColor(baseColor, 25);  // Lighten by 25%
+        const hoverBg = lightenColor(baseColor, 25);  // Lighten by 25%
   
         // Set the calculated colors
         document.documentElement.style.setProperty('--header-bg', headerBg);
         document.documentElement.style.setProperty('--sidebar-bg', sidebarBg);
-        document.documentElement.style.setProperty('--card-bg', cardBg);
+        document.documentElement.style.setProperty('--hover-bg', hoverBg);
     }
 }
   
