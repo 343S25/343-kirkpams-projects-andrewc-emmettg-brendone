@@ -367,18 +367,25 @@ document.getElementById('graph-form').onsubmit = function(event) {
 
     // Get sum of all values and fractionalize each component as %
     const totalSum = numData.reduce((sum, cur) => sum + cur, 0);
-    let fracData = [];
-    numData.forEach(entry => { fracData.push(entry * 100 / totalSum) });
+    let chartData = [];
+    let title = 'Title';
+    if (info.type == 'doughnut') {
+        numData.forEach(entry => { chartData.push(entry * 100 / totalSum) });
+        title = '% of Expenditures';
+    } else if (info.type == 'bar') {
+        chartData = numData;
+        title = 'Expenses by Type';
+    }
 
     // Creating chart
     const ctx = document.getElementById('myChart');
     new Chart(ctx, {
-        type: 'doughnut',
+        type: info.type,
         data: {
             labels: labels,
             datasets: [{
-                label: '% of Expenditures',
-                data: fracData,
+                label: title,
+                data: chartData,
                 borderWidth: 1
             }]
         },
