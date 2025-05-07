@@ -14,14 +14,14 @@ function getData() {
 }
 
 function loadSettings() {
-    const saved = JSON.parse(localStorage.getItem("userSettings"));
+    const saved = JSON.parse(localStorage.getItem('userSettings'));
     
     if (saved) {
         // Apply dark mode
-        document.body.classList.toggle("dark-mode", saved.darkMode);
+        document.body.classList.toggle('dark-mode', saved.darkMode);
 
         // Apply base theme color
-        const baseColor = saved.color || "#3498db"; // Default blue if no color saved
+        const baseColor = saved.color || '#3498db'; // Default blue if no color saved
         document.documentElement.style.setProperty('--theme-color', baseColor);
   
         // Generate and apply modified color variants
@@ -118,7 +118,7 @@ window.onclick = function(event) {
 }
 
 // Dynamically generate inner subtypes for list
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener('DOMContentLoaded', () => {
     // Set entry date to today
     const entryDateInput = document.getElementById('entry-date');
     if (entryDateInput) {
@@ -144,7 +144,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function updateSubtypes(selectedType) {
         subtypeSelect.innerHTML = ""; // Clears existing options
         typeToSubtypes[selectedType].forEach(subtype => {
-            const option = document.createElement("option");
+            const option = document.createElement('option');
             option.value = subtype.toLowerCase().replace(/ /g, "-"); // Replacing spaces with -, making lowercase.
             option.textContent = subtype;
             subtypeSelect.appendChild(option);

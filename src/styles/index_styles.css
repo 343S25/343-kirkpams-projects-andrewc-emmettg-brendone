@@ -217,6 +217,7 @@ button:hover {
     gap: 5px;
     bottom: 0px;
     position: absolute;
+    z-index: 3; /* Keep sidebar content above other */
   }
 
   .hovertext {

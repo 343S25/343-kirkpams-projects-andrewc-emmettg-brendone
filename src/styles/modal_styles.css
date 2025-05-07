@@ -27,7 +27,7 @@
     max-width: 600px; /* Maximum width */
     max-height: 85vh;
     position: relative;
-    z-index: 3; /* Keep modal content above the darkened background */
+    z-index: 3; /* Keep modal content above other */
   }
   
   .modal-content-area {
