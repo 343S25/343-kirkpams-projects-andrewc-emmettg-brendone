@@ -21,18 +21,20 @@ function loadSettings() {
         document.body.classList.toggle('dark-mode', saved.darkMode);
 
         // Apply base theme color
-        const baseColor = saved.color || '#3498db'; // Default blue if no color saved
+        const baseColor = saved.color || '#4e6c8b'; // Default blue if no color saved
         document.documentElement.style.setProperty('--theme-color', baseColor);
   
         // Generate and apply modified color variants
         const headerBg = darkenColor(baseColor, 20);  // Darken by 20%
         const sidebarBg = darkenColor(baseColor, 10); // Darken by 10%
         const hoverBg = lightenColor(baseColor, 25);  // Lighten by 25%
+        const cardBg = lightenColor(baseColor, 90); // Lighten by 90%
   
         // Set the calculated colors
         document.documentElement.style.setProperty('--header-bg', headerBg);
         document.documentElement.style.setProperty('--sidebar-bg', sidebarBg);
         document.documentElement.style.setProperty('--hover-bg', hoverBg);
+        document.documentElement.style.setProperty('--card-bg', cardBg)
     }
 }
   
