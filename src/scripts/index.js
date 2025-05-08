@@ -187,47 +187,9 @@ function waitForTableAndMakeSortable(table, interval = 200, timeout = 5000) {
     }, interval);
 }
 
-///////////////////////////////
-// Show the current GDP Data//
-//////////////////////////////
-const homeData = document.getElementById('homeButton');
-if (homeData) {
-    homeData.addEventListener('click', () => {
-        window.location.href = "index.html";
-    });
-}
-
-const gdpData = document.getElementById('gdpButton');
-if (gdpData) {
-    gdpData.addEventListener('click', () => {
-        window.location.href = "gdp.html";
-    });
-}
-
-const cpiData = document.getElementById('cpiButton');
-if (cpiData) {
-    cpiData.addEventListener('click', () => {
-        window.location.href = "cpi.html";
-    });
-}
-
-const pceData = document.getElementById('pceButton');
-if (pceData) {
-    pceData.addEventListener('click', () => {
-        window.location.href = "usd.html";
-    });
-}
-
-const fedData = document.getElementById('fedButton');
-if (fedData) {
-    fedData.addEventListener('click', () => {
-        window.location.href = "fed.html";
-    });
-}
-
-const settingsBtn = document.getElementById('btn-settings');
-if (settingsBtn) {
-    settingsBtn.addEventListener('click', () => {
-        window.location.href = "settings.html";
-    });
-}
+// Page linking buttons
+document.getElementById('btn-gdp').addEventListener('click', () => { window.location.href = "gdp.html" });
+document.getElementById('btn-cpi').addEventListener('click', () => { window.location.href = "cpi.html" });
+document.getElementById('btn-pce').addEventListener('click', () => { window.location.href = "usd.html" });
+document.getElementById('btn-fed').addEventListener('click', () => { window.location.href = "fed.html" });
+document.getElementById('btn-settings').addEventListener('click', () => { window.location.href = "settings.html" });
