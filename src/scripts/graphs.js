@@ -115,7 +115,7 @@ document.getElementById('graph-form').onsubmit = function(event) {
         let dateLabels = [];
         let currDate = new Date(info.start + 'T00:00:00');
         while (currDate <= new Date(info.end + 'T00:00:00')) {
-            dateLabels.push(currDate.toISOString().split('T')[0]); // Store a copy of the date
+            dateLabels.push(formatDate(currDate)); // Store a copy of the date
             currDate.setDate(currDate.getDate() + 1); // Increment the date by one day
         }
         console.log("Generated Date Labels:", dateLabels);
