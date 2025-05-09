@@ -209,7 +209,8 @@ document.getElementById('btn-data-preview').addEventListener('click', async () =
                     date: date,
                     value: parseFloat(value['4. close']) // Closing exchange rate value for USD to EUR
                 };
-            });
+            })
+            .reverse();
 
         // If no data found for the date range
         if (filteredData.length === 0) {

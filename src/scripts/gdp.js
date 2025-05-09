@@ -66,11 +66,6 @@ window.onload = loadSettings;
 const graph_modal = document.getElementById('graph-modal');
 const data_modal = document.getElementById('data-modal');
 
-// Show the graph modal when the "Graph Display" button is clicked
-document.getElementById('btn-graph-display').addEventListener('click', () => {
-    graph_modal.style.display = 'block';
-});
-
 // Show the data modal when the "Data Display" button is clicked
 document.getElementById('btn-data-display').addEventListener('click', () => {
     data_modal.style.display = 'block';
@@ -99,7 +94,7 @@ window.onclick = function (event) {
 // Show the hidden graph dropdown if needed
 const dataSelect = document.getElementById('graph-data-select');
 const typeSelectGroup = document.getElementById('graph-type-select-group');
-
+let filteredData = [];
 
 // Show the hidden data dropdown if needed
 const ddataSelect = document.getElementById('data-data-select');
@@ -171,7 +166,7 @@ document.getElementById('btn-graph-preview').addEventListener('click', () => {
 // Load data into preview display
 document.getElementById('btn-data-preview').addEventListener('click', async () => {
     // Get start and end dates from the input fields
-    const [seriesId, startDate, endDate] = pull_data_data();
+    const [startDate, endDate] = pull_data_data();
 
     // Validate date range
     if (startDate && endDate && (startDate > endDate || endDate < startDate)) {
@@ -196,6 +191,22 @@ document.getElementById('btn-data-preview').addEventListener('click', async () =
         const timeSeries = data['data'];
         // If no data found for the date range
         if (timeSeries.length === 0) {
+            document.getElementById('data-preview').innerHTML = `
+                <div class="no-data">
+                    <h3>No Data Found for the Selected Date Range.</h3>
+                </div>`;
+            return;
+        }
+        filteredData = timeSeries
+        .filter(item => item.date >= startDate && item.date <= endDate)
+        .map((item) => {
+            return {
+                date: item.date,
+                value: parseFloat(item.value) // Closing exchange rate value for USD to EUR
+            };
+        })
+        .reverse();
+        if (filteredData.length === 0) {
             document.getElementById('data-preview').innerHTML = `
                 <div class="no-data">
                     <h3>No Data Found for the Selected Date Range.</h3>
@@ -255,19 +266,55 @@ document.getElementById('graph-form').onsubmit = function (event) {
 // Handle form submission (to generate a table based on selected data type and time)
 document.getElementById('data-form').onsubmit = function (event) {
     event.preventDefault();
-    const start = document.getElementById('data-start-date').value;
-    const end = document.getElementById('data-end-date').value;
-    if ((start && end) && (start > end || end < start)) {
-        alert('Invalid date range: Start date must precede end date.');
+    if (filteredData.length === 0) {
+        alert('No data picked yet');
         return;
     }
-    const info = pull_data_data();
-    document.getElementById('temp-content').innerHTML = `Will be the Data display of:<br>Data Type Selected: ${info[0]}<br>Over Time From ${info[1]} to ${info[2]}`;
-    console.log(`Data Type Selected: ${info[0]}`);
-    console.log(`Start Date: ${info[1]}`);
-    console.log(`End Date: ${info[2]}`);
-    data_modal.style.display = 'none';
-}
+    const labels = filteredData.map(entry => entry.date);
+    const data = filteredData.map(entry => entry.value);
+
+    const ctx = document.getElementById('myChart');
+
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'US GDP',
+                data: data,
+                fill: false,
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 2,
+                tension: 0.1,
+                pointRadius: 3
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'US GDP Over Time'
+                },
+            },
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Date'
+                    }
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: 'US GDP'
+                    },
+                    beginAtZero: false
+                }
+            }
+        }
+    });
+};
 ///////////////////////////////
 // Show the current GDP Data//
 //////////////////////////////
@@ -305,3 +352,6 @@ if (fedData) {
         window.location.href = "fed.html";
     });
 }
+document.getElementById("clear-btn").addEventListener('click', () => { 
+    document.getElementById('chart').innerHTML = '<script src="https://cdn.jsdelivr.net/npm/chart.js"></script><canvas id="myChart"></canvas>';
+});

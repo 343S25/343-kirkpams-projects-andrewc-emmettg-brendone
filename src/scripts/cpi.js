@@ -207,7 +207,8 @@ document.getElementById('btn-data-preview').addEventListener('click', async () =
                     date: item.date,
                     value: parseFloat(item.value) // Closing exchange rate value for USD to EUR
                 };
-            });
+            })
+            .reverse();
 
         // If no data found for the date range
         if (filteredData.length === 0) {
@@ -288,7 +289,7 @@ document.getElementById('data-form').onsubmit = function (event) {
         data: {
             labels: labels,
             datasets: [{
-                label: 'CPI Rate',
+                label: 'CPI',
                 data: data,
                 fill: false,
                 borderColor: 'rgba(75, 192, 192, 1)',
@@ -302,7 +303,7 @@ document.getElementById('data-form').onsubmit = function (event) {
             plugins: {
                 title: {
                     display: true,
-                    text: 'CPI Rate Over Time'
+                    text: 'CPI Over Time'
                 },
             },
             scales: {
@@ -315,7 +316,7 @@ document.getElementById('data-form').onsubmit = function (event) {
                 y: {
                     title: {
                         display: true,
-                        text: 'Rate(%)'
+                        text: 'CPI'
                     },
                     beginAtZero: false
                 }
