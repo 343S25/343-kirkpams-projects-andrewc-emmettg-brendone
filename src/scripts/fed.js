@@ -4,62 +4,6 @@
  * Author(s): Andrew Cramer, BRENDON ELMORE 
  */
 
-function loadSettings() {
-    const saved = JSON.parse(localStorage.getItem("userSettings"));
-
-    if (saved) {
-        // Apply dark mode
-        document.body.classList.toggle("dark-mode", saved.darkMode);
-
-        // Apply base theme color
-        const baseColor = saved.color || "#4e6c8b"; // Default blue if no color saved
-        document.documentElement.style.setProperty('--theme-color', baseColor);
-
-        // Generate and apply modified color variants
-        const headerBg = darkenColor(baseColor, 20);  // Darken by 20%
-        const sidebarBg = darkenColor(baseColor, 10); // Darken by 10%
-        const hoverBg = lightenColor(baseColor, 25);  // Lighten by 25%
-        const cardBg = lightenColor(baseColor, 90); // Lighten by 90%
-
-        // Set the calculated colors
-        document.documentElement.style.setProperty('--header-bg', headerBg);
-        document.documentElement.style.setProperty('--sidebar-bg', sidebarBg);
-        document.documentElement.style.setProperty('--hover-bg', hoverBg);
-        document.documentElement.style.setProperty('--card-bg', cardBg)
-    }
-}
-
-function darkenColor(hex, percent) {
-    let color = hex.slice(1); // Remove the '#'
-    let r = parseInt(color.substring(0, 2), 16);
-    let g = parseInt(color.substring(2, 4), 16);
-    let b = parseInt(color.substring(4, 6), 16);
-
-    r = Math.floor(r * (1 - percent / 100));
-    g = Math.floor(g * (1 - percent / 100));
-    b = Math.floor(b * (1 - percent / 100));
-
-    return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
-}
-
-function lightenColor(hex, percent) {
-    let color = hex.slice(1); // Remove the '#'
-    let r = parseInt(color.substring(0, 2), 16);
-    let g = parseInt(color.substring(2, 4), 16);
-    let b = parseInt(color.substring(4, 6), 16);
-
-    r = Math.min(255, Math.floor(r + (255 - r) * (percent / 100)));
-    g = Math.min(255, Math.floor(g + (255 - g) * (percent / 100)));
-    b = Math.min(255, Math.floor(b + (255 - b) * (percent / 100)));
-
-    return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
-}
-
-function toHex(value) {
-    let hex = value.toString(16);
-    return hex.length === 1 ? `0${hex}` : hex;
-}
-
 window.onload = loadSettings;
 
 // Get modal and button
@@ -263,6 +207,7 @@ document.getElementById('graph-form').onsubmit = function (event) {
 
 // Handle form submission (to generate a table based on selected data type and time)
 document.getElementById('data-form').onsubmit = function (event) {
+    document.getElementById('clear-btn').click();
     event.preventDefault();
     if (filteredData.length === 0) {
         alert('No data picked yet');
