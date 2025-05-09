@@ -204,6 +204,7 @@ button:hover {
   background-color: var(--hover-bg); /* Hover effect with dynamic color */
 }
 
+
 /* Mobile Layouts */
 @media only screen and (max-width: 900px) {
   .sidebar {

@@ -61,13 +61,10 @@ function toHex(value) {
 window.onload = loadSettings;
 
 // Get modal and button
-const graph_modal = document.getElementById('graph-modal');
+
 const data_modal = document.getElementById('data-modal');
 
-// Show the graph modal when the "Graph Display" button is clicked
-document.getElementById('btn-graph-display').addEventListener('click', () => {
-    graph_modal.style.display = 'block';
-});
+
 
 // Show the data modal when the "Data Display" button is clicked
 document.getElementById('btn-data-display').addEventListener('click', () => {

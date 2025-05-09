@@ -33,7 +33,7 @@
   .modal-content-area {
     position: relative;
     bottom: 5px;
-    height: 100px;
+    height: 200px;
     background-color: var(--bg-color); /* Keep the light/dark mode background */
     border: 1px solid #ccc;
     margin-top: 20px;
@@ -48,4 +48,18 @@
     overflow-x: hidden;
     padding: 10px;
     box-sizing: border-box;
+  }
+  #data-preview {
+    max-height: 180px;
+    overflow-y: auto;
+    padding-right: 10px;
+    border: 1px solid #ccc;
+    margin-top: 10px;
+  }
+  #graph-preview {
+    max-height: 180px;
+    overflow-y: auto;
+    padding-right: 10px;
+    border: 1px solid #ccc;
+    margin-top: 10px;
   }
