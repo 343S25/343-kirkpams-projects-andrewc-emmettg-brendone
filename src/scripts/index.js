@@ -26,7 +26,6 @@ document.getElementById("clear-btn").addEventListener('click', () => {
     document.getElementById('chart').innerHTML = '<script src="https://cdn.jsdelivr.net/npm/chart.js"></script><canvas id="myChart"></canvas>';
     document.getElementById('emojiContainer').innerHTML = '';
 });
-
 // Page linking buttons
 document.getElementById('btn-gdp').addEventListener('click', () => { window.location.href = "gdp.html" });
 document.getElementById('btn-cpi').addEventListener('click', () => { window.location.href = "cpi.html" });

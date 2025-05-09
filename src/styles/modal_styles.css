@@ -1,7 +1,7 @@
 /*
   CSS for modals.
 
-  Author(s): Andrew Cramer, 
+  Author(s): Andrew Cramer, Brendon Elmore
 */
 
 /* Modal styles */
@@ -49,17 +49,20 @@
     padding: 10px;
     box-sizing: border-box;
   }
-  #data-preview {
+  #data-area {
     max-height: 180px;
     overflow-y: auto;
     padding-right: 10px;
     border: 1px solid #ccc;
     margin-top: 10px;
   }
-  #graph-preview {
+  #graph-area {
     max-height: 180px;
     overflow-y: auto;
     padding-right: 10px;
     border: 1px solid #ccc;
     margin-top: 10px;
+  }
+  #data-preview {
+
   }
