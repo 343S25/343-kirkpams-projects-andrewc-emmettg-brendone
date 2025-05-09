@@ -189,6 +189,7 @@ document.getElementById('btn-data-preview').addEventListener('click', async () =
 
 // Handle form submission (to generate a graph based on selected graph type, data type, and time)
 document.getElementById('graph-form').onsubmit = function (event) {
+    document.getElementById('chart').innerHTML = '<script src="https://cdn.jsdelivr.net/npm/chart.js"></script><canvas id="myChart"></canvas>';
     event.preventDefault();
     const start = document.getElementById('graph-start-date').value;
     const end = document.getElementById('graph-end-date').value;

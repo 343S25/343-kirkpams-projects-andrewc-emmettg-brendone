@@ -229,6 +229,7 @@ document.getElementById('graph-form').onsubmit = function (event) {
 
 // Handle form submission (to generate a table based on selected data type and time)
 document.getElementById('data-form').onsubmit = function (event) {
+    document.getElementById('chart').innerHTML = '<script src="https://cdn.jsdelivr.net/npm/chart.js"></script><canvas id="myChart"></canvas>';
     event.preventDefault();
     if (filteredData.length === 0) {
         alert('No data picked yet');
