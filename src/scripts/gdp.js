@@ -7,7 +7,7 @@
 window.onload = loadSettings;
 
 // Get modal and button
-const graph_modal = document.getElementById('graph-modal');
+
 const data_modal = document.getElementById('data-modal');
 
 // Show the data modal when the "Data Display" button is clicked
@@ -272,3 +272,8 @@ document.getElementById('fedButton').addEventListener('click', () => { window.lo
 document.getElementById("clear-btn").addEventListener('click', () => { 
     document.getElementById('chart').innerHTML = '<script src="https://cdn.jsdelivr.net/npm/chart.js"></script><canvas id="myChart"></canvas>';
 });
+const dateInput = document.getElementById('graph-end-date');
+const today = new Date().toISOString().split('T')[0];
+dateInput.max = today;
+const dateInput2 = document.getElementById('data-end-date');
+dateInput2.max = today;

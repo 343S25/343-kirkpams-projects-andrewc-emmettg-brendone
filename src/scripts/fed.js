@@ -299,3 +299,8 @@ if (fedData) {
 document.getElementById("clear-btn").addEventListener('click', () => {
     document.getElementById('chart').innerHTML = '<script src="https://cdn.jsdelivr.net/npm/chart.js"></script><canvas id="myChart"></canvas>';
 });
+const dateInput = document.getElementById('graph-end-date');
+const today = new Date().toISOString().split('T')[0];
+dateInput.max = today;
+const dateInput2 = document.getElementById('data-end-date');
+dateInput2.max = today;
