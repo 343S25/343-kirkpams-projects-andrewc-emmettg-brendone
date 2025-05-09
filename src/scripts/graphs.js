@@ -96,6 +96,7 @@ document.getElementById('graph-form').onsubmit = function(event) {
         return;
     }
 
+
     // Filtering data by specified time
     let dateFiltered = [];
     const all_data = getData();
@@ -229,23 +230,24 @@ document.getElementById('graph-form').onsubmit = function(event) {
                 }
             }
         });
+
+        // placing emojis
+        console.log(getData());
+        let alldataem = getData();
+        alldataem.forEach((data) => {
+            if ((data['category']['type'] === 'food') && ((data['amount']/totalSum) > 0.5)){
+                document.getElementById("emojiContainer").innerHTML=('<img id="emoji" src="./images/cookie.png" width=200px>');
+            } else if ((data['category']['type'] === 'bills') && ((data['amount']/totalSum) > 0.5)){
+                document.getElementById("emojiContainer").innerHTML=('<img id="emoji" src="./images/worried.png" width=200px>');
+            } else if ((data['category']['type'] === 'revenue') && ((data['amount']/totalSum) > 0.5)){
+                document.getElementById("emojiContainer").innerHTML=('<img id="emoji" src="./images/cool.png" width=200px>');
+            } else {
+                document.getElementById("emojiContainer").innerHTML=('<img id="emoji" src="./images/content.png" width=200px>');
+            }
+        });
     }
     graph_modal.style.display = 'none';
 
-    // placing emojis
-    console.log(getData());
-    let alldataem = getData();
-    const totalSum = numData.reduce((sum, cur) => sum + cur, 0);
-    alldataem.forEach((data) => {
-        if ((data['category']['type'] === 'food') && ((data['amount']/totalSum) > 0.5)){
-            document.getElementById("emojiContainer").innerHTML=('<img id="emoji" src="./images/cookie.png" width=200px>');
-        } else if ((data['category']['type'] === 'bills') && ((data['amount']/totalSum) > 0.5)){
-            document.getElementById("emojiContainer").innerHTML=('<img id="emoji" src="./images/worried.png" width=200px>');
-        } else if ((data['category']['type'] === 'revenue') && ((data['amount']/totalSum) > 0.5)){
-            document.getElementById("emojiContainer").innerHTML=('<img id="emoji" src="./images/cool.png" width=200px>');
-        } else {
-            document.getElementById("emojiContainer").innerHTML=('<img id="emoji" src="./images/content.png" width=200px>');
-        }
-    });
+    
 
 }
