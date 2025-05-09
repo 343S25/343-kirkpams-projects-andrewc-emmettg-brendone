@@ -7,7 +7,6 @@
 window.onload = loadSettings;
 
 // Get modal and button
-
 const data_modal = document.getElementById('data-modal');
 
 
@@ -17,82 +16,21 @@ document.getElementById('btn-data-display').addEventListener('click', () => {
     data_modal.style.display = 'block';
 });
 
-// Close the graph modal when the "X" button is clicked
-document.getElementById('close-graph-modal').addEventListener('click', () => {
-    graph_modal.style.display = 'none';
-});
-
 // Close the data modal when the "X" button is clicked
 document.getElementById('close-data-modal').addEventListener('click', () => {
     data_modal.style.display = 'none';
 });
 
 // Close the graph or data modal if user clicks outside of it
-window.onclick = function (event) {
-    if (event.target == data_modal) {
-        data_modal.style.display = 'none';
-    }
-}
+window.onclick = function (event) { if (event.target == data_modal) { data_modal.style.display = 'none' } }
 
-// Show the hidden graph dropdown if needed
-const dataSelect = document.getElementById('graph-data-select');
-const typeSelectGroup = document.getElementById('graph-type-select-group');
 let filteredData = [];
 
-// Show the hidden data dropdown if needed
-const ddataSelect = document.getElementById('data-data-select');
-const dtypeSelectGroup = document.getElementById('data-type-select-group');
-function setDefaultDateRange(startId, endId, daysBack = 30) {
-    const endDateInput = document.getElementById(endId);
-    const startDateInput = document.getElementById(startId);
-
-    const today = new Date();
-    const priorDate = new Date();
-    priorDate.setDate(today.getDate() - daysBack);
-
-    // Format to YYYY-MM-DD
-    const format = (date) => date.toISOString().split('T')[0];
-
-    endDateInput.value = format(today);
-    startDateInput.value = format(priorDate);
-
-    // Set min/max logic
-    endDateInput.min = format(priorDate);
-    startDateInput.max = format(today);
-}
-
-// Apply to both forms
-setDefaultDateRange('graph-start-date', 'graph-end-date');
-setDefaultDateRange('data-start-date', 'data-end-date');
-
-// Prevent submission if dates invalid
-function syncDatePickers(startInput, endInput) {
-    const start = document.getElementById(startInput);
-    const end = document.getElementById(endInput);
-
-    start.addEventListener('change', () => {
-        end.min = start.value;
-    });
-
-    end.addEventListener('change', () => {
-        start.max = end.value;
-    });
-}
-
-// Apply to both modals
-syncDatePickers('graph-start-date', 'graph-end-date');
+// Apply date funcitons to forms
+setDefaultDateRange('data-start-date', 'data-end-date', 365);
 syncDatePickers('data-start-date', 'data-end-date');
+
 const apiKey = 'OL4N342B4496RSGK';
-function pull_graph_data() {
-    let graph = document.getElementById('graph-type').value;
-    let data = document.getElementById('graph-data-select').value; // Get the graph data selection type
-    if (data == 'data-type') {
-        data = document.getElementById('graph-entry-type').value; // Sets the actual graph data type 
-    }
-    let start_date = document.getElementById('graph-start-date').value;
-    let end_date = document.getElementById('graph-end-date').value;
-    return [graph, data, start_date, end_date]
-}
 
 function pull_data_data() {
     let seriesId = 'USA';
@@ -100,18 +38,6 @@ function pull_data_data() {
     let end_date = document.getElementById('data-end-date').value;
     return [seriesId, start_date, end_date]
 }
-
-// Load graph into preview display
-document.getElementById('btn-graph-preview').addEventListener('click', () => {
-    const start = document.getElementById('graph-start-date').value;
-    const end = document.getElementById('graph-end-date').value;
-    if ((start && end) && (start > end || end < start)) {
-        document.getElementById('graph-preview').textContent = 'Invalid date range: Start date must precede end date.';
-        return;
-    }
-    let info = pull_graph_data();
-    document.getElementById('graph-preview').innerHTML = `Will be a Graph of:<br>Graph Type Selected: ${info[0]}<br>Data Type Selected: ${info[1]}<br>Over Time From ${info[2]} to ${info[3]}`;
-});
 
 // Load data into preview display
 document.getElementById('btn-data-preview').addEventListener('click', async () => {
@@ -206,28 +132,7 @@ document.getElementById('btn-data-preview').addEventListener('click', async () =
     }
 });
 
-// Handle form submission (to generate a graph based on selected graph type, data type, and time)
-document.getElementById('graph-form').onsubmit = function (event) {
-    document.getElementById('clear-btn').click();
-    event.preventDefault();
-    const start = document.getElementById('graph-start-date').value;
-    const end = document.getElementById('graph-end-date').value;
-    if ((start && end) && (start > end || end < start)) {
-        alert('Invalid date range: Start date must precede end date.');
-        return;
-    }
-    const info = pull_graph_data();
-    document.getElementById('temp-content').innerHTML = `Will be a Graph of:<br>Graph Type Selected: ${info[0]}<br>Data Type Selected: ${info[1]}`;
-    console.log(`Graph Type Selected: ${info[0]}`);
-    console.log(`Data Type Selected: ${info[1]}`);
-    console.log(`Start Date: ${info[2]}`);
-    console.log(`End Date: ${info[3]}`);
-    // TODO add functionality to dynamically generate a graph
-    // Research using Chart.js or another graphing library
-    graph_modal.style.display = 'none';
-}
-
-// Handle form submission (to generate a table based on selected data type and time)
+// Handle data form submission
 document.getElementById('data-form').onsubmit = function (event) {
     document.getElementById('chart').innerHTML = '<script src="https://cdn.jsdelivr.net/npm/chart.js"></script><canvas id="myChart"></canvas>';
     event.preventDefault();
@@ -279,49 +184,18 @@ document.getElementById('data-form').onsubmit = function (event) {
             }
         }
     });
+    data_modal.style.display = 'none';
 };
-///////////////////////////////
-// Show the current USD Data//
-//////////////////////////////
-const homeData = document.getElementById('homeButton');
-if (homeData) {
-    homeData.addEventListener('click', () => {
-        window.location.href = "index.html";
-    });
-}
 
-const gdpData = document.getElementById('gdpButton');
-if (gdpData) {
-    gdpData.addEventListener('click', () => {
-        window.location.href = "gdp.html";
-    });
-}
+document.getElementById('homeButton').addEventListener('click', () => { window.location.href = "index.html" });
+document.getElementById('gdpButton').addEventListener('click', () => { window.location.href = "gdp.html" });
+document.getElementById('cpiButton').addEventListener('click', () => { window.location.href = "cpi.html" });
+document.getElementById('fedButton').addEventListener('click', () => { window.location.href = "fed.html" });
 
-const cpiData = document.getElementById('cpiButton');
-if (cpiData) {
-    cpiData.addEventListener('click', () => {
-        window.location.href = "cpi.html";
-    });
-}
-
-const pceData = document.getElementById('pceButton');
-if (pceData) {
-    pceData.addEventListener('click', () => {
-        window.location.href = "usd.html";
-    });
-}
-
-const fedData = document.getElementById('fedButton');
-if (fedData) {
-    fedData.addEventListener('click', () => {
-        window.location.href = "fed.html";
-    });
-}
-const dateInput = document.getElementById('graph-end-date');
-const today = new Date().toISOString().split('T')[0];
-dateInput.max = today;
-const dateInput2 = document.getElementById('data-end-date');
-dateInput2.max = today;
 document.getElementById("clear-btn").addEventListener('click', () => { 
     document.getElementById('chart').innerHTML = '<script src="https://cdn.jsdelivr.net/npm/chart.js"></script><canvas id="myChart"></canvas>';
 });
+
+const today = new Date().toISOString().split('T')[0];
+const dateInput2 = document.getElementById('data-end-date');
+dateInput2.max = today;
