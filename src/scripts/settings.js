@@ -6,7 +6,7 @@
 
 // Apply settings to the page
 function applySettings(settings) {
-    document.getElementById('themeColor').value = settings.color || '#3498db';
+    document.getElementById('themeColor').value = settings.color || '#4e6c8b';
     document.getElementById('darkMode').checked = settings.darkMode || false;
   
     // Apply dark mode class to body
@@ -33,7 +33,7 @@ document.getElementById('btn-reset-settings').addEventListener('click', () => {
     localStorage.removeItem('userSettings');
   
     const defaultSettings = {
-        color: '#3498db',
+        color: '#4e6c8b',
         darkMode: false
     };
   

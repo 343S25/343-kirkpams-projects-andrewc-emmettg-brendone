@@ -25,10 +25,10 @@
                     <li><button type="button" id="btn-import">Import</button></li>
                     <li><button type="button" id="btn-export">Export</button></li>
                     <li><button type="submit" id="btn-settings">Settings</button></li>
-                    <li><button type="submit" id="gdpButton">Get GDP Data</button></li>
-                    <li><button type="submit" id="cpiButton">Get CPI Data </button></li>
-                    <li><button type="submit" id="pceButton">Get USD Data</button></li>
-                    <li><button type="submit" id="fedButton">Get FED rate</button></li>
+                    <li><button type="submit" id="btn-gdp">Get GDP Data</button></li>
+                    <li><button type="submit" id="btn-cpi">Get CPI Data </button></li>
+                    <li><button type="submit" id="btn-pce">Get PCE Data</button></li>
+                    <li><button type="submit" id="btn-fed">Get FED rate</button></li>
                 </ol>
                 <img id="piggyboy" src="./images/pigboy.png" alt="Minimalist Piggy Bank">
             </div>
@@ -55,12 +55,13 @@
                     <select id="graph-type" name="graph-type">
                         <option value="doughnut" selected>Doughnut Chart</option>
                         <option value="bar">Bar Chart</option>
+                        <option value="line">Cumulative Value Line Chart</option>
                     </select>
                 </div>
-                <div class="form-group">
+                <div class="form-group" id="graph-data-select-div">
                     <label for="graph-data-select">Select Data</label>
                     <select id="graph-data-select" name="graph-data-select">
-                        <option value="data-all" selected>All Entries</option>
+                        <option value="data-exp" selected>All Expenses</option>
                         <option value="data-type">Entries by Type</option>
                     </select>
                 </div>
@@ -182,7 +183,13 @@
             </form>
         </div>
     </div>
+    <script src="scripts/helpers.js"></script>
     <script src="scripts/index.js"></script>
+    <script src="scripts/graphs.js"></script>
+    <script src="scripts/data.js"></script>
+    <script src="scripts/entry.js"></script>
+    <script src="scripts/import.js"></script>
+    <script src="scripts/export.js"></script>
     <a href="fed.html" tabindex="-1" aria-hidden="true"></a>
 </body>
 

@@ -210,7 +210,8 @@ button:hover {
   .sidebar {
     background-color: var(--sidebar-bg); /* Dynamic sidebar color */
     color: white;
-    padding: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
     height: 50px;
     width: 100vw;
     display: flex;
@@ -218,6 +219,7 @@ button:hover {
     gap: 5px;
     bottom: 0px;
     position: absolute;
+    max-height: 60vh;
     z-index: 3; /* Keep sidebar content above other */
   }
 
@@ -237,7 +239,7 @@ button:hover {
     left: 70px;
 
     /* Adds a scroll bar to the nav section */
-    max-height: 60vh;
+    max-height: 50vh;
     overflow-y: scroll;      /* Always show scrollbar */
     scrollbar-width: auto;   /* For Firefox */
     background-color: var(--sidebar-bg); /* Dynamic sidebar background */
@@ -260,14 +262,18 @@ button:hover {
   .nav-list button {
     width: 100vw;
     padding: 6px 0;
-    padding-left: 40vw;
-    padding-right: 45vw;
+    padding-left: 30vw;
+    padding-right: 30vw;
     background-color: var(--theme-color);
     color: white;
     border: none;
     border-radius: 4px;
     font-size: 1em;
     cursor: pointer;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    white-space: nowrap;
     transition: background-color 0.2s ease;
   }
 
