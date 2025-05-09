@@ -6,7 +6,7 @@
 
 function loadSettings() {
     const saved = JSON.parse(localStorage.getItem("userSettings"));
-    
+
     if (saved) {
         // Apply dark mode
         document.body.classList.toggle("dark-mode", saved.darkMode);
@@ -14,13 +14,13 @@ function loadSettings() {
         // Apply base theme color
         const baseColor = saved.color || "#4e6c8b"; // Default blue if no color saved
         document.documentElement.style.setProperty('--theme-color', baseColor);
-  
+
         // Generate and apply modified color variants
         const headerBg = darkenColor(baseColor, 20);  // Darken by 20%
         const sidebarBg = darkenColor(baseColor, 10); // Darken by 10%
         const hoverBg = lightenColor(baseColor, 25);  // Lighten by 25%
         const cardBg = lightenColor(baseColor, 90); // Lighten by 90%
-  
+
         // Set the calculated colors
         document.documentElement.style.setProperty('--header-bg', headerBg);
         document.documentElement.style.setProperty('--sidebar-bg', sidebarBg);
@@ -28,38 +28,38 @@ function loadSettings() {
         document.documentElement.style.setProperty('--card-bg', cardBg)
     }
 }
-  
+
 function darkenColor(hex, percent) {
     let color = hex.slice(1); // Remove the '#'
     let r = parseInt(color.substring(0, 2), 16);
     let g = parseInt(color.substring(2, 4), 16);
     let b = parseInt(color.substring(4, 6), 16);
-  
+
     r = Math.floor(r * (1 - percent / 100));
     g = Math.floor(g * (1 - percent / 100));
     b = Math.floor(b * (1 - percent / 100));
-  
+
     return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
 }
-  
+
 function lightenColor(hex, percent) {
     let color = hex.slice(1); // Remove the '#'
     let r = parseInt(color.substring(0, 2), 16);
     let g = parseInt(color.substring(2, 4), 16);
     let b = parseInt(color.substring(4, 6), 16);
-  
+
     r = Math.min(255, Math.floor(r + (255 - r) * (percent / 100)));
     g = Math.min(255, Math.floor(g + (255 - g) * (percent / 100)));
     b = Math.min(255, Math.floor(b + (255 - b) * (percent / 100)));
-  
+
     return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
 }
-  
+
 function toHex(value) {
     let hex = value.toString(16);
     return hex.length === 1 ? `0${hex}` : hex;
 }
-  
+
 window.onload = loadSettings;
 
 // Get modal and button
@@ -84,10 +84,7 @@ document.getElementById('close-data-modal').addEventListener('click', () => {
 });
 
 // Close the graph or data modal if user clicks outside of it
-window.onclick = function(event) {
-    if (event.target == graph_modal) {
-        graph_modal.style.display = 'none';
-    }
+window.onclick = function (event) {
     if (event.target == data_modal) {
         data_modal.style.display = 'none';
     }
@@ -96,7 +93,7 @@ window.onclick = function(event) {
 // Show the hidden graph dropdown if needed
 const dataSelect = document.getElementById('graph-data-select');
 const typeSelectGroup = document.getElementById('graph-type-select-group');
-
+let filteredData = [];
 
 // Show the hidden data dropdown if needed
 const ddataSelect = document.getElementById('data-data-select');
@@ -185,7 +182,7 @@ document.getElementById('btn-data-preview').addEventListener('click', async () =
 
     // Set the Alpha Vantage API key
     const apiKey = 'your_alpha_vantage_api_key';
-    
+
     // Example for pulling USD to EUR exchange rate
     const url = `https://www.alphavantage.co/query?function=FX_DAILY&from_symbol=USD&to_symbol=EUR&apikey=${apiKey}`;
 
@@ -204,14 +201,14 @@ document.getElementById('btn-data-preview').addEventListener('click', async () =
 
         // Extract and filter the data based on the date range
         const timeSeries = data['Time Series FX (Daily)'];
-        const filteredData = Object.entries(timeSeries)
+        filteredData = Object.entries(timeSeries)
             .filter(([date, value]) => {
                 return date >= startDate && date <= endDate;
             })
             .map(([date, value]) => {
                 return {
                     date: date,
-                    value: value['4. close'] // Closing exchange rate value for USD to EUR
+                    value: parseFloat(value['4. close']) // Closing exchange rate value for USD to EUR
                 };
             });
 
@@ -266,7 +263,7 @@ document.getElementById('btn-data-preview').addEventListener('click', async () =
 });
 
 // Handle form submission (to generate a graph based on selected graph type, data type, and time)
-document.getElementById('graph-form').onsubmit = function(event) {
+document.getElementById('graph-form').onsubmit = function (event) {
     event.preventDefault();
     const start = document.getElementById('graph-start-date').value;
     const end = document.getElementById('graph-end-date').value;
@@ -286,23 +283,59 @@ document.getElementById('graph-form').onsubmit = function(event) {
 }
 
 // Handle form submission (to generate a table based on selected data type and time)
-document.getElementById('data-form').onsubmit = function(event) {
+document.getElementById('data-form').onsubmit = function (event) {
     event.preventDefault();
-    const start = document.getElementById('data-start-date').value;
-    const end = document.getElementById('data-end-date').value;
-    if ((start && end) && (start > end || end < start)) {
-        alert('Invalid date range: Start date must precede end date.');
+    if (filteredData.length === 0) {
+        alert('No data picked yet');
         return;
     }
-    const info = pull_data_data();
-    document.getElementById('temp-content').innerHTML = `Will be the Data display of:<br>Data Type Selected: ${info[0]}<br>Over Time From ${info[1]} to ${info[2]}`;
-    console.log(`Data Type Selected: ${info[0]}`);
-    console.log(`Start Date: ${info[1]}`);
-    console.log(`End Date: ${info[2]}`);
-    data_modal.style.display = 'none';
-}
+    const labels = filteredData.map(entry => entry.data);
+    const data = filteredData.map(entry => entry.value);
+
+    const ctx = document.getElementById('myChart');
+
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'USD to EUR Exchange Rate',
+                data: data,
+                fill: false,
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 2,
+                tension: 0.1,
+                pointRadius: 3
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'USD to EUR Exchange Rate Over Time'
+                },
+            },
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Date'
+                    }
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: 'Exchange Rate (€)'
+                    },
+                    beginAtZero: false
+                }
+            }
+        }
+    });
+};
 ///////////////////////////////
-// Show the current GDP Data//
+// Show the current USD Data//
 //////////////////////////////
 const homeData = document.getElementById('homeButton');
 if (homeData) {
@@ -338,3 +371,6 @@ if (fedData) {
         window.location.href = "fed.html";
     });
 }
+document.getElementById("clear-btn").addEventListener('click', () => { 
+    document.getElementById('chart').innerHTML = '<script src="https://cdn.jsdelivr.net/npm/chart.js"></script><canvas id="myChart"></canvas>';
+});
