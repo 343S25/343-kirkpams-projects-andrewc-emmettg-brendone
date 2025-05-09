@@ -135,7 +135,7 @@ function syncDatePickers(startInput, endInput) {
     });
 }
 
-// Apply to both modals
+// Apply to both modalsOL4N342B4496RSGK
 syncDatePickers('graph-start-date', 'graph-end-date');
 syncDatePickers('data-start-date', 'data-end-date');
 const apiKey = 'MRWAWS3RRAUEQWZ3';

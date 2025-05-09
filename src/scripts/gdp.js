@@ -138,7 +138,7 @@ function syncDatePickers(startInput, endInput) {
 // Apply to both modals
 syncDatePickers('graph-start-date', 'graph-end-date');
 syncDatePickers('data-start-date', 'data-end-date');
-const apiKey = 'J380G8OUFNIX2MUM';
+const apiKey = 'OL4N342B4496RSGK';
 function pull_graph_data() {
     let graph = document.getElementById('graph-type').value;
     let data = document.getElementById('graph-data-select').value; // Get the graph data selection type

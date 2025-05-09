@@ -20,7 +20,6 @@
             <div class="sidebar">
                 <ol class="nav-list">
                     <li><button type="button" id="homeButton">Home</button></li>
-                    <li><button type="button" id="btn-graph-display">Graph Display</button></li>
                     <li><button type="button" id="btn-data-display">Data Display</button></li>
                     <li><button type="submit" id="gdpButton">Get GDP Data</button></li>
                     <li><button type="submit" id="pceButton">Get USD Data</button></li>
@@ -29,11 +28,11 @@
             </div>
             <div class="main">
                 <div class="content">
-                    <!-- Chart should be embedded here -->
                     <h3 id="display-title">Display Area</h3>
+                    <button type="button" id="clear-btn">Clear Display</button>
                     <div id="chart">
-                        <p id="temp-content"></p>
-                        <!-- Chart JS or iframe should go here -->
+                        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                        <canvas id="myChart"></canvas>
                     </div>
                 </div>
                 <div class="explaination">

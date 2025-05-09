@@ -138,7 +138,7 @@ function syncDatePickers(startInput, endInput) {
 // Apply to both modals
 syncDatePickers('graph-start-date', 'graph-end-date');
 syncDatePickers('data-start-date', 'data-end-date');
-const apiKey = 'J380G8OUFNIX2MUM';
+const apiKey = 'OL4N342B4496RSGK';
 function pull_graph_data() {
     let graph = document.getElementById('graph-type').value;
     let data = document.getElementById('graph-data-select').value; // Get the graph data selection type
@@ -181,7 +181,6 @@ document.getElementById('btn-data-preview').addEventListener('click', async () =
     }
 
     // Set the Alpha Vantage API key
-    const apiKey = 'your_alpha_vantage_api_key';
 
     // Example for pulling USD to EUR exchange rate
     const url = `https://www.alphavantage.co/query?function=FX_DAILY&from_symbol=USD&to_symbol=EUR&apikey=${apiKey}`;
