@@ -1,7 +1,7 @@
 /**
  * JavaScript code for defined helper functions.
  * 
- * Author(s): Andrew Cramer, 
+ * Author(s): Andrew Cramer, Emmett Grebe
  */
 
 function getData() {

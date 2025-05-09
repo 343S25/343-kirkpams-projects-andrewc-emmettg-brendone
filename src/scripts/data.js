@@ -66,6 +66,7 @@ document.getElementById('btn-data-preview').addEventListener('click', () => {
 // Handle data form submission (to generate a table based on selected data type and time)
 document.getElementById('data-form').onsubmit = function(event) {
     event.preventDefault();
+    document.getElementById('emojiContainer').innerHTML = '';
     const info = pull_data_data();
     if ((info.start && info.end) && (info.start > info.end || info.end < info.start)) {
         alert('Invalid date range: Start date must precede end date.');

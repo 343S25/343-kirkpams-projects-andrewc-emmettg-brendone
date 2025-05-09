@@ -1,7 +1,7 @@
 /*
   CSS for main page index.html
 
-  Author(s): Andrew Cramer, 
+  Author(s): Andrew Cramer, Emmett Grebe
 */
 
 * {
@@ -204,7 +204,11 @@ button:hover {
   background-color: var(--hover-bg); /* Hover effect with dynamic color */
 }
 
-
+#emojiContainer {
+  position: fixed;
+  top: 315px;
+  left: 335px;  
+}
 /* Mobile Layouts */
 @media only screen and (max-width: 900px) {
   .sidebar {
@@ -279,5 +283,11 @@ button:hover {
 
   .nav-list button:hover {
     background-color: var(--hover-bg);
+  }
+
+  #emojiContainer {
+  position: fixed;
+  top: 150;
+  left: 135px;  
   }
 }
