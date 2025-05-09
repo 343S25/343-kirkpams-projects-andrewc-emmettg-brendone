@@ -289,7 +289,7 @@ document.getElementById('data-form').onsubmit = function (event) {
         alert('No data picked yet');
         return;
     }
-    const labels = filteredData.map(entry => entry.data);
+    const labels = filteredData.map(entry => entry.date);
     const data = filteredData.map(entry => entry.value);
 
     const ctx = document.getElementById('myChart');
