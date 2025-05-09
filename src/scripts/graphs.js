@@ -1,7 +1,7 @@
 /**
  * JavaScript code for handling graph button, graph modal, and graphing display.
  * 
- * Author(s): Andrew Cramer, 
+ * Author(s): Andrew Cramer, Emmett Grebe
  */
 
 // Show the graph modal when the "Graph Display" button is clicked
@@ -95,6 +95,7 @@ document.getElementById('graph-form').onsubmit = function(event) {
         alert('Invalid date range: Start date must precede end date.');
         return;
     }
+
 
     // Filtering data by specified time
     let dateFiltered = [];
@@ -229,6 +230,24 @@ document.getElementById('graph-form').onsubmit = function(event) {
                 }
             }
         });
+
+        // placing emojis
+        console.log(getData());
+        let alldataem = getData();
+        alldataem.forEach((data) => {
+            if ((data['category']['type'] === 'food') && ((data['amount']/totalSum) > 0.5)){
+                document.getElementById("emojiContainer").innerHTML=('<img id="emoji" src="./images/cookie.png" width=200px>');
+            } else if ((data['category']['type'] === 'bills') && ((data['amount']/totalSum) > 0.5)){
+                document.getElementById("emojiContainer").innerHTML=('<img id="emoji" src="./images/worried.png" width=200px>');
+            } else if ((data['category']['type'] === 'revenue') && ((data['amount']/totalSum) > 0.5)){
+                document.getElementById("emojiContainer").innerHTML=('<img id="emoji" src="./images/cool.png" width=200px>');
+            } else {
+                document.getElementById("emojiContainer").innerHTML=('<img id="emoji" src="./images/content.png" width=200px>');
+            }
+        });
     }
     graph_modal.style.display = 'none';
+
+    
+
 }
