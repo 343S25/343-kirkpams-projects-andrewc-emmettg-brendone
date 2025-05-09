@@ -17,11 +17,6 @@ document.getElementById('btn-data-display').addEventListener('click', () => {
     data_modal.style.display = 'block';
 });
 
-// Close the graph modal when the "X" button is clicked
-document.getElementById('close-graph-modal').addEventListener('click', () => {
-    graph_modal.style.display = 'none';
-});
-
 // Close the data modal when the "X" button is clicked
 document.getElementById('close-data-modal').addEventListener('click', () => {
     data_modal.style.display = 'none';
@@ -59,55 +54,17 @@ function setDefaultDateRange(startId, endId) {
 }
 
 // Apply to both forms
-setDefaultDateRange('graph-start-date', 'graph-end-date');
 setDefaultDateRange('data-start-date', 'data-end-date');
 
-// Prevent submission if dates invalid
-function syncDatePickers(startInput, endInput) {
-    const start = document.getElementById(startInput);
-    const end = document.getElementById(endInput);
-
-    start.addEventListener('change', () => {
-        end.min = start.value;
-    });
-
-    end.addEventListener('change', () => {
-        start.max = end.value;
-    });
-}
-
 // Apply to both modals
-syncDatePickers('graph-start-date', 'graph-end-date');
 syncDatePickers('data-start-date', 'data-end-date');
 const apiKey = 'OL4N342B4496RSGK';
-function pull_graph_data() {
-    let graph = document.getElementById('graph-type').value;
-    let data = document.getElementById('graph-data-select').value; // Get the graph data selection type
-    if (data == 'data-type') {
-        data = document.getElementById('graph-entry-type').value; // Sets the actual graph data type 
-    }
-    let start_date = document.getElementById('graph-start-date').value;
-    let end_date = document.getElementById('graph-end-date').value;
-    return [graph, data, start_date, end_date]
-}
 
 function pull_data_data() {
     let start_date = document.getElementById('data-start-date').value;
     let end_date = document.getElementById('data-end-date').value;
     return [start_date, end_date]
 }
-
-// Load graph into preview display
-document.getElementById('btn-graph-preview').addEventListener('click', () => {
-    const start = document.getElementById('graph-start-date').value;
-    const end = document.getElementById('graph-end-date').value;
-    if ((start && end) && (start > end || end < start)) {
-        document.getElementById('graph-preview').textContent = 'Invalid date range: Start date must precede end date.';
-        return;
-    }
-    let info = pull_graph_data();
-    document.getElementById('graph-preview').innerHTML = `Will be a Graph of:<br>Graph Type Selected: ${info[0]}<br>Data Type Selected: ${info[1]}<br>Over Time From ${info[2]} to ${info[3]}`;
-});
 
 // Load data into preview display
 document.getElementById('btn-data-preview').addEventListener('click', async () => {
@@ -120,13 +77,11 @@ document.getElementById('btn-data-preview').addEventListener('click', async () =
         return;
     }
 
-
     // Example for pulling USD to EUR exchange rate
     const url = `https://www.alphavantage.co/query?function=CPI&interval=monthly&apikey=${apiKey}`;
     try {
         const response = await fetch(url);
         const data = await response.json();
-
 
         if (!data['data']) {
             document.getElementById('data-preview').innerHTML = `
@@ -152,7 +107,6 @@ document.getElementById('btn-data-preview').addEventListener('click', async () =
                 };
             })
             .reverse();
-
         // If no data found for the date range
         if (filteredData.length === 0) {
             document.getElementById('data-preview').innerHTML = `
@@ -192,29 +146,6 @@ document.getElementById('btn-data-preview').addEventListener('click', async () =
             </div>`;
     }
 });
-
-// Handle form submission (to generate a graph based on selected graph type, data type, and time)
-document.getElementById('graph-form').onsubmit = function (event) {
-    event.preventDefault();
-    const start = document.getElementById('graph-start-date').value;
-    const end = document.getElementById('graph-end-date').value;
-    if ((start && end) && (start > end || end < start)) {
-        alert('Invalid date range: Start date must precede end date.');
-        return;
-    }
-    const info = pull_graph_data();
-    document.getElementById('temp-content').innerHTML = `Will be a Graph of:<br>Graph Type Selected: ${info[0]}<br>Data Type Selected: ${info[1]}`;
-    console.log(`Graph Type Selected: ${info[0]}`);
-    console.log(`Data Type Selected: ${info[1]}`);
-    console.log(`Start Date: ${info[2]}`);
-    console.log(`End Date: ${info[3]}`);
-    // TODO add functionality to dynamically generate a graph
-    // Research using Chart.js or another graphing library
-    graph_modal.style.display = 'none';
-}
-
-// Handle form submission (to generate a table based on selected data type and time)
-
 // Handle form submission (to generate a table based on selected data type and time)
 document.getElementById('data-form').onsubmit = function (event) {
     document.getElementById('chart').innerHTML = '<script src="https://cdn.jsdelivr.net/npm/chart.js"></script><canvas id="myChart"></canvas>';
@@ -268,6 +199,7 @@ document.getElementById('data-form').onsubmit = function (event) {
             }
         }
     });
+    data_modal.style.display = 'none';
 };
 
 ///////////////////////////////
